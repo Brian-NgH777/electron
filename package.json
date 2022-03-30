@@ -27,7 +27,6 @@
   "build": {
     "productName": "Electron",
     "appId": "org.erb.ElectronReact",
-    "asar": false,
     "mac": {
       "target": {
         "target": "default",
@@ -66,10 +65,7 @@
         "deb"
       ],
       "category": "Development"
-    },
-    "extraResources": [
-      "./assets/**"
-    ]
+    }
   },
   "dependencies": {
     "path": "^0.12.7",
