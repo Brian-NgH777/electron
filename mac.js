@@ -2,7 +2,8 @@ let {PythonShell} = require('python-shell');
 var path = require("path");
 
 function GetIP() {
-    let p = path.join(__dirname);
+    console.log("scan..........");
+    let p = path.join(__dirname, 'py');
     var options = {
         scriptPath : p,
     }

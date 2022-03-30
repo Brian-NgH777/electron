@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder build"
+    "dist": "electron-builder build -mwl"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -27,6 +27,16 @@
   "build": {
     "productName": "Electron",
     "appId": "org.erb.ElectronReact",
+    "extraResources": [
+      {
+          "from": "../py",
+          "to": "py",
+          "filter": [
+              "**/*"
+          ]
+      }
+    ],
+    "asar": false,
     "mac": {
       "target": {
         "target": "default",
