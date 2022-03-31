@@ -29,11 +29,11 @@
     "appId": "org.erb.ElectronReact",
     "extraResources": [
       {
-          "from": "../py",
-          "to": "py",
-          "filter": [
-              "**/*"
-          ]
+        "from": "../py",
+        "to": "py",
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "asar": false,
