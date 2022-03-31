@@ -9,7 +9,7 @@ function GetIP() {
     }
     console.log("pppp", p);
 
-    PythonShell.run('pk-new-test', options, function (err, data) {
+    PythonShell.run('test.py', options, function (err, data) {
         if (err) throw err;
         console.log('finished', data);
         document.getElementById("ip").innerHTML = data;
