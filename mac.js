@@ -2,17 +2,32 @@
 var path = require("path");
 const child_process = require("child_process");
 const fs = require("fs");
-let appName = "Electron", localData, fileName = "appData.json";
+let appName = "Electron", localData, fileName = "data-storage.log";
 
 function GetIP() {
     console.log("scan..........");
     document.getElementById("ip").innerHTML = "scan..........";
-
-    // var options = {
-    //     scriptPath : path.join(__dirname, 'py'),
-    // }
-
-    const cmd = path.join(__dirname, 'py', 'pk-new');
+    var cmd = ""
+    switch (process.platform) {
+        case "darwin": {
+            console.log("darwin");
+            cmd = path.join(__dirname, 'py', 'pk-new');
+            break
+        }
+        case "win32": {
+            console.log("win32");
+            cmd = path.join(__dirname, 'py', 'pk-new.exe');
+            break
+        }
+        case "linux": {
+            console.log("linux");
+            cmd = path.join(__dirname, 'py', 'pk-new');
+            break
+        }
+        default: {
+            cmd = path.join(__dirname, 'py', 'pk-new');
+        }
+    }
 
     run_script(cmd, null, () => {
         console.log("running script success");
@@ -53,7 +68,7 @@ function run_script(command, args, callback) {
     child.stdout.on("data", (data) => {
       //Here is the output
         console.log("data", data);
-        saveAppData(data)
+        // saveAppData(data)
         document.getElementById("ip").innerHTML = data;
     });
   
@@ -113,4 +128,4 @@ function saveAppData (content) {
             console.log("Data saved correctly!");
         }
     });
-}
+} 
