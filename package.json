@@ -34,6 +34,13 @@
         "filter": [
           "**/*"
         ]
+      },
+      {
+        "from": "../frp",
+        "to": "frp",
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "asar": false,
@@ -80,7 +87,8 @@
   "dependencies": {
     "axios": "^0.26.1",
     "child_process": "^1.0.2",
+    "ioredis": "^5.0.3",
     "path": "^0.12.7",
-    "python-shell": "^3.0.1"
+    "util": "^0.12.4"
   }
 }
