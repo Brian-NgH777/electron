@@ -2,36 +2,27 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link href="./styles.css" rel="stylesheet" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <!-- <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
+    /> -->
     <title>Hello</title>
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@2.13.6/dist/full.css"
       rel="stylesheet"
       type="text/css"
     />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.31/vue.global.prod.min.js"
-      integrity="sha512-aHDp6BDlnbRLDTxmY5GIqQA0RQd6dmeKIDDDiEJlRrKNQPZbo2mjsR/DGMUzupcCpE4XgPyeIPnDQdJNUmeEhw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-      src="https://cdn.tailwindcss.com"
-    ></script>
   </head>
   <body>
-    <div id="app" v-model="title"></div>
-    <h1>Hello</h1>
-    <p id="demo"></p>
-    <p id="ip"></p>
-    <button onclick="Ping()">Ping</button>
-    <button onclick="GetIP()">Get IP</button>
-    <button onclick="InstallPackage()">Install Package</button>
+    <div id="app">
+      <router-view> </router-view>
+    </div>
 
-    <script src="./renderer.js"></script>
+    <script src="./assets/js/vue.global.prod.min.js"></script>
+    <script src="./assets/js/vue-router.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="./mac.js"></script>
-    <script src="./app/index.js"></script>
+    <script src="./renderer.js"></script>
   </body>
 </html>
