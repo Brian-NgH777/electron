@@ -1,14 +1,35 @@
 // let {PythonShell} = require('python-shell');
 var path = require("path");
 const util = require('util');
+const axios = require('axios');
 const exec = util.promisify(require('child_process').exec);
-// const Redis = require('ioredis');
-// const fs = require("fs");
-// const client = new Redis('redis://localhost:6379');
+const Redis = require('ioredis');
+const fs = require("fs");
+const ini = require('ini');
+const client = new Redis('redis://9f4062f54cd4b4e9a141af66@localhost:6379/0');
 
-// let appName = "Electron", localData, fileName = "data-storage.log";
+let appName = "Electron";
+// let localData, fileName = "data-storage.log";
+async function Auth(username, password) {
+    try {
+        // login logic => get username
 
-async function GetIP() {
+
+
+        if(username.length === 0) {
+            console.error('error:', "username miss");
+        }
+        url = `https://api-dev-revamp.viact.net/api/v2/frpc-tokens/${username}`
+        let { data } = await axios.get(url)
+        console.log("dataaaaa", data);
+        return {username, token: data.result.token}
+    } catch (error) {
+        console.error('error:', error);
+    }
+   
+}
+
+async function GetIP(username) {
     console.log("scan..........");
     document.getElementById("ip").innerHTML = "scan..........";
     var cmd = ""
@@ -36,28 +57,29 @@ async function GetIP() {
     const { stdout, stderr } = await exec(cmd);
     console.log('stdout:', stdout);
     console.log('stderr:', stderr);
-    // await saveDataScan('b-test-1', stdout);
+    await saveDataScan(username, stdout);
     document.getElementById("ip").innerHTML = stdout;
+    return stdout
 }
 
 
-// function getAppDataPath() {
-//     switch (process.platform) {
-//         case "darwin": {
-//             return path.join(process.env.HOME, "Library", "Application Support", appName);
-//         }
-//         case "win32": {
-//             return path.join(process.env.APPDATA, appName);
-//         }
-//         case "linux": {
-//             return path.join(process.env.HOME, "."+appName);
-//         }
-//         default: {
-//             console.log("Unsupported platform!");
-//             process.exit(1);
-//         }
-//     }
-// }
+function getAppDataPath() {
+    switch (process.platform) {
+        case "darwin": {
+            return path.join(process.env.HOME, "Library", "ApplicationSupport", appName);
+        }
+        case "win32": {
+            return path.join(process.env.APPDATA, appName);
+        }
+        case "linux": {
+            return path.join(process.env.HOME, "."+appName);
+        }
+        default: {
+            console.log("Unsupported platform!");
+            process.exit(1);
+        }
+    }
+}
 
 // function saveAppData (content) {
 //     const appDataDir = getAppDataPath();
@@ -80,14 +102,21 @@ async function GetIP() {
 //     });
 // }
 
-// async function saveDataScan(key, value) {
-//     let s = await client.set(key, value);
-//     console.log("set", s);
-// }
+async function saveDataScan(key, value) {
+    let s = await client.set(key, value);
+    console.log("set", s);
+}
 
 async function InstallPackage() {
+    let un = document.getElementById('username').value;
+    // let pw = document.getElementById('password').value;
+    let d = await Auth(un, "123");
+    await GetIP(d.username);
+    
+
     let pab = '';
-    let pai = path.join(__dirname, 'frp', 'frpc.ini');
+    let pai = createIni(d);
+
     switch (process.platform) {
         case "darwin": {
             console.log("darwin");
@@ -114,4 +143,30 @@ async function InstallPackage() {
     const { stdout, stderr } = await exec(cmd);
     console.log('stdout:', stdout);
     console.log('stderr:', stderr);
+}
+
+function createIni(d) {
+    const appDataDir = getAppDataPath();
+
+    if (!fs.existsSync(appDataDir)) {
+        fs.mkdirSync(appDataDir);
+    }
+
+    let pai = path.join(__dirname, 'frp', 'frpc.ini')
+    var config = ini.parse(fs.readFileSync(pai, 'utf-8'))
+
+    config.common.server_addr = '13.213.164.203';
+    config.common.server_port = '7000';
+    config.common.user = d.username;
+    config.common.meta_token = d.token;
+
+    config.tcp_7000.remote_port = '2323';
+    config.tcp_7000.local_port = '7000';
+    config.tcp_7000.local_ip = '127.0.0.1';
+
+    const appDataFilePath = path.join(appDataDir, "config_frpc.ini");
+
+    fs.writeFileSync(appDataFilePath, ini.stringify(config))
+
+    return appDataFilePath
 }
