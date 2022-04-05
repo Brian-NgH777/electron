@@ -29,6 +29,7 @@
     "productName": "Electron",
     "appId": "org.erb.ElectronReact",
     "extraResources": [
+      "./assets/**",
       {
         "from": "../py",
         "to": "py",
