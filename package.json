@@ -22,7 +22,8 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^18.0.0",
-    "electron-builder": "^22.14.13"
+    "electron-builder": "^22.14.13",
+    "electron-reloader": "^1.2.3"
   },
   "build": {
     "productName": "Electron",
