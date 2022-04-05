@@ -15,21 +15,21 @@ async function GetIP() {
   switch (process.platform) {
     case 'darwin': {
       console.log('darwin');
-      cmd = path.join(__dirname, 'py', 'pk-new');
+      cmd = path.join(__dirname, '../', 'py', 'pk-new');
       break;
     }
     case 'win32': {
       console.log('win32');
-      cmd = path.join(__dirname, 'py', 'pk-new.exe');
+      cmd = path.join(__dirname, '../', 'py', 'pk-new.exe');
       break;
     }
     case 'linux': {
       console.log('linux');
-      cmd = path.join(__dirname, 'py', 'pk-new');
+      cmd = path.join(__dirname, '../', 'py', 'pk-new');
       break;
     }
     default: {
-      cmd = path.join(__dirname, 'py', 'pk-new');
+      cmd = path.join(__dirname, '../', 'py', 'pk-new');
     }
   }
 
@@ -86,25 +86,25 @@ async function GetIP() {
 
 async function InstallPackage() {
   let pab = '';
-  let pai = path.join(__dirname, 'frp', 'frpc.ini');
+  let pai = path.join(__dirname, '../', 'frp', 'frpc.ini');
   switch (process.platform) {
     case 'darwin': {
       console.log('darwin');
-      pab = path.join(__dirname, 'frp', 'frpc-mac');
+      pab = path.join(__dirname, '../', 'frp', 'frpc-mac');
       break;
     }
     case 'win32': {
       console.log('win32');
-      pab = path.join(__dirname, 'frp', 'frpc-win.exe');
+      pab = path.join(__dirname, '../', 'frp', 'frpc-win.exe');
       break;
     }
     case 'linux': {
       console.log('linux');
-      pab = path.join(__dirname, 'frp', 'frpc-raspberry');
+      pab = path.join(__dirname, '../', 'frp', 'frpc-raspberry');
       break;
     }
     default: {
-      pab = path.join(__dirname, 'frp', 'frpc-mac');
+      pab = path.join(__dirname, '../', 'frp', 'frpc-mac');
     }
   }
 

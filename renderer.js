@@ -1,3 +1,5 @@
+const Vue = require('vue');
+const VueRouter = require('vue-router');
 const SetUp = require('./app/pages/SetUp');
 const Login = require('./app/pages/Auth/Login');
 

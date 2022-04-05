@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder build"
+    "build": "rm -rf release/ && electron-builder build"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -18,14 +18,14 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^18.0.0",
-    "electron-builder": "^22.14.13",
+    "electron-builder": "^23.0.2",
     "electron-reloader": "^1.2.3"
   },
   "build": {
     "extends": null,
     "appId": "org.erb.ElectronReact",
     "extraResources": [
-      "./assets/**",
+      "./assets/**/*",
       {
         "from": "./py",
         "to": "py",
@@ -44,6 +44,7 @@
     "directories": {
       "output": "release"
     },
+    "asar": true,
     "mac": {
       "target": {
         "target": "default",
@@ -89,6 +90,8 @@
     "child_process": "^1.0.2",
     "ioredis": "^5.0.3",
     "path": "^0.12.7",
-    "util": "^0.12.4"
+    "util": "^0.12.4",
+    "vue": "^3.2.31",
+    "vue-router": "^4.0.14"
   }
 }
