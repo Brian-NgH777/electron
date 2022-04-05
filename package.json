@@ -5,15 +5,12 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder build"
+    "dist": "electron-builder build",
+    "build": "rm -rf release/ && electron-builder build"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Electron"
   ],
   "author": {
     "name": "Electron React Boilerplate Maintainers",
@@ -22,30 +19,33 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^18.0.0",
-    "electron-builder": "^22.14.13",
+    "electron-builder": "^23.0.2",
     "electron-reloader": "^1.2.3"
   },
   "build": {
-    "productName": "Electron",
+    "extends": null,
     "appId": "org.erb.ElectronReact",
     "extraResources": [
-      "./assets/**",
+      "./assets/**/*",
       {
-        "from": "../py",
+        "from": "./py",
         "to": "py",
         "filter": [
           "**/*"
         ]
       },
       {
-        "from": "../frp",
+        "from": "./frp",
         "to": "frp",
         "filter": [
           "**/*"
         ]
       }
     ],
-    "asar": false,
+    "directories": {
+      "output": "release"
+    },
+    "asar": true,
     "mac": {
       "target": {
         "target": "default",
@@ -92,6 +92,8 @@
     "ini": "^2.0.0",
     "ioredis": "^5.0.3",
     "path": "^0.12.7",
-    "util": "^0.12.4"
+    "util": "^0.12.4",
+    "vue": "^3.2.31",
+    "vue-router": "^4.0.14"
   }
 }
