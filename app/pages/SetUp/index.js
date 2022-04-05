@@ -1,3 +1,5 @@
+const { GetIP } = require('../../../mac');
+
 const template = `
   <div className="h-screen w-full overflow-hidden">
     <div className="flex flex-row h-full">
@@ -32,6 +34,7 @@ const template = `
           <div className="space-x-4">
             <button className="btn btn-primary loading">loading</button>
             <button className="btn btn-primary btn-sm">Small</button>
+            <button className="btn btn-primary btn-sm" @click="getIp">Get Ip</button>
           </div>
         </div>
         <div className="divider"></div>
@@ -80,5 +83,10 @@ module.exports = {
   template,
   data() {
     return {};
+  },
+  methods: {
+    getIp: function () {
+      GetIP();
+    },
   },
 };

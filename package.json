@@ -5,15 +5,11 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder build -mwl"
+    "build": "electron-builder build"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Electron"
   ],
   "author": {
     "name": "Electron React Boilerplate Maintainers",
@@ -26,26 +22,28 @@
     "electron-reloader": "^1.2.3"
   },
   "build": {
-    "productName": "Electron",
+    "extends": null,
     "appId": "org.erb.ElectronReact",
     "extraResources": [
       "./assets/**",
       {
-        "from": "../py",
+        "from": "./py",
         "to": "py",
         "filter": [
           "**/*"
         ]
       },
       {
-        "from": "../frp",
+        "from": "./frp",
         "to": "frp",
         "filter": [
           "**/*"
         ]
       }
     ],
-    "asar": false,
+    "directories": {
+      "output": "release"
+    },
     "mac": {
       "target": {
         "target": "default",
