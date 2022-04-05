@@ -2,17 +2,8 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <!-- <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
-    /> -->
+    <link href="./styles.css" rel="stylesheet" />
     <title>Hello</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@2.13.6/dist/full.css"
-      rel="stylesheet"
-      type="text/css"
-    />
   </head>
   <body>
     <script type="text/x-template" id="login-page">
@@ -195,7 +186,11 @@
       <router-view> </router-view>
     </div>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <input type="text" id="username" name="username" /><br />
+    <button onclick="InstallPackage()">Install Package</button>
+
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script src="./renderer.js"></script>
+    <script src="./mac.js"></script>
   </body>
 </html>
