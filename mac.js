@@ -3,25 +3,22 @@ var path = require('path');
 const util = require('util');
 const axios = require('axios');
 const exec = util.promisify(require('child_process').exec);
-const Redis = require('ioredis');
 const fs = require("fs");
 const ini = require('ini');
-const client = new Redis('redis://9f4062f54cd4b4e9a141af66@localhost:6379/0');
 
 let appName = "Electron";
 // let localData, fileName = "data-storage.log";
 async function Auth(username, password) {
     try {
         // login logic => get username
-
-
-
         if(username.length === 0) {
             console.error('error:', "username miss");
         }
-        url = `https://api-dev-revamp.viact.net/api/v2/frpc-tokens/${username}`
-        let { data } = await axios.get(url)
-        console.log("dataaaaa", data);
+        let url = `https://api-dev-revamp.viact.net/api/v2/frpc-tokens/${username}`;
+        let { data } = await axios.get(url);
+        if(!data || !data.result) {
+            console.error('error:', error);
+        }
         return {username, token: data.result.token}
     } catch (error) {
         console.error('error:', error);
@@ -29,9 +26,26 @@ async function Auth(username, password) {
    
 }
 
+async function postScanCamera(username, data) {
+    try {
+        let url = `https://api-dev-revamp.viact.net/api/v2/cameras/detection/scan/create`
+        let { status } = await axios.post(url, {username, data});
+        if(!status || status !== 201 ) {
+            console.error('error:', error);
+        }
+    } catch (error) {
+        console.error('error:', error);
+    }
+}
+
 async function GetIP(username) {
     console.log("scan..........");
     document.getElementById("ip").innerHTML = "scan..........";
+
+    if(!username) {
+        username = document.getElementById('username').value;
+    }
+
     var cmd = ""
     switch (process.platform) {
         case "darwin": {
@@ -57,11 +71,9 @@ async function GetIP(username) {
     const { stdout, stderr } = await exec(cmd);
     console.log('stdout:', stdout);
     console.log('stderr:', stderr);
-    await saveDataScan(username, stdout);
+    await postScanCamera(username, stdout);
     document.getElementById("ip").innerHTML = stdout;
-    return stdout
 }
-
 
 function getAppDataPath() {
     switch (process.platform) {
@@ -101,11 +113,6 @@ function getAppDataPath() {
 //         }
 //     });
 // }
-
-async function saveDataScan(key, value) {
-    let s = await client.set(key, value);
-    console.log("set", s);
-}
 
 async function InstallPackage() {
     let un = document.getElementById('username').value;
