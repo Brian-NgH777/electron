@@ -2,8 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link href="./styles.css" rel="stylesheet" />
     <title>Hello</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.13.6/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
   <body>
     <script type="text/x-template" id="login-page">
@@ -137,7 +141,7 @@
               <div className="space-x-4">
                 <button className="btn btn-primary loading">loading</button>
                 <button className="btn btn-primary btn-sm">Small</button>
-                <button className="btn btn-primary btn-sm" @click="getIp">Get Ip</button>
+                <button className="btn btn-primary btn-sm" v-on:click="getIp">Get Ip</button>
               </div>
             </div>
             <div className="divider"></div>
@@ -189,8 +193,7 @@
     <input type="text" id="username" name="username" /><br />
     <button onclick="InstallPackage()">Install Package</button>
 
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="./renderer.js"></script>
-    <script src="./mac.js"></script>
   </body>
 </html>
