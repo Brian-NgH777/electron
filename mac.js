@@ -26,13 +26,14 @@ async function Auth(username, password) {
    
 }
 
-async function postScanCamera(username, data) {
+async function postScanCamera(username, d) {
     try {
         let url = `https://api-dev-revamp.viact.net/api/v2/cameras/detection/scan/create`
-        let { status } = await axios.post(url, {username, data});
+        let { status, data } = await axios.post(url, {username, data: d});
         if(!status || status !== 201 ) {
             console.error('error:', error);
         }
+        console.log("postScanCamera", data);
     } catch (error) {
         console.error('error:', error);
     }
@@ -50,24 +51,24 @@ async function GetIP(username) {
     switch (process.platform) {
         case "darwin": {
             console.log("darwin");
-            cmd = path.join(__dirname, 'py', 'pk-new');
+            cmd = path.join(__dirname, '../py', 'pk-new');
             break
         }
         case "win32": {
             console.log("win32");
-            cmd = path.join(__dirname, 'py', 'pk-new.exe');
+            cmd = path.join(__dirname, '../py', 'pk-new.exe');
             break
         }
         case "linux": {
             console.log("linux");
-            cmd = path.join(__dirname, 'py', 'pk-new');
+            cmd = path.join(__dirname, '../py', 'pk-new');
             break
         }
         default: {
-            cmd = path.join(__dirname, 'py', 'pk-new');
+            cmd = path.join(__dirname, '../py', 'pk-new');
         }
     }
-
+    console.log("cmdcmdcmdcmdcmdcmdcmd", cmd);
     const { stdout, stderr } = await exec(cmd);
     console.log('stdout:', stdout);
     console.log('stderr:', stderr);
@@ -127,21 +128,21 @@ async function InstallPackage() {
     switch (process.platform) {
         case "darwin": {
             console.log("darwin");
-            pab = path.join(__dirname, 'frp', 'frpc-mac');
+            pab = path.join(__dirname, '../frp', 'frpc-mac');
             break
         }
         case "win32": {
             console.log("win32");
-            pab = path.join(__dirname, 'frp', 'frpc-win.exe');
+            pab = path.join(__dirname, '../frp', 'frpc-win.exe');
             break
         }
         case "linux": {
             console.log("linux");
-            pab = path.join(__dirname, 'frp', 'frpc-raspberry');
+            pab = path.join(__dirname, '../frp', 'frpc-raspberry');
             break
         }
         default: {
-            pab = path.join(__dirname, 'frp', 'frpc-mac');
+            pab = path.join(__dirname, '../frp', 'frpc-mac');
         }
     }
   
@@ -173,7 +174,7 @@ function createIni(d) {
 
     const appDataFilePath = path.join(appDataDir, "config_frpc.ini");
 
-    fs.writeFileSync(appDataFilePath, ini.stringify(config))
+    fs.writeFileSync(appDataFilePath, ini.stringify(config));
 
     return appDataFilePath
 }

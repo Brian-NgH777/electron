@@ -25,6 +25,7 @@
   "build": {
     "extends": null,
     "appId": "org.erb.ElectronReact",
+    "productName": "Electron",
     "extraResources": [
       "./assets/**/*",
       {
