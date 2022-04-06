@@ -1,7 +1,8 @@
+require('./tailwind.config');
 const Vue = require('vue');
 const VueRouter = require('vue-router');
-const SetUp = require('./app/pages/SetUp');
-const Login = require('./app/pages/Auth/Login');
+const SetUp = require('./app/screens/SetUp');
+const Login = require('./app/screens/Auth/Login');
 
 const routes = [
   { path: '/logged', component: SetUp },
