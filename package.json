@@ -19,8 +19,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^18.0.0",
-    "electron-builder": "^23.0.2",
-    "electron-reloader": "^1.2.3"
+    "electron-builder": "^23.0.2"
   },
   "build": {
     "extends": null,
@@ -89,10 +88,13 @@
   "dependencies": {
     "axios": "^0.26.1",
     "child_process": "^1.0.2",
+    "daisyui": "^2.13.6",
     "ini": "^2.0.0",
+    "node-notifier": "^10.0.1",
     "path": "^0.12.7",
     "util": "^0.12.4",
     "vue": "^3.2.31",
-    "vue-router": "^4.0.14"
+    "vue-router": "^4.0.14",
+    "vuex": "^4.0.2"
   }
 }

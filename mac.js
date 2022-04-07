@@ -40,9 +40,9 @@ async function postScanCamera(username, data) {
 async function GetIP(username) {
   console.log('scan..........');
 
-  // if (!username) {
-  //   username = document.getElementById('username').value;
-  // }
+  if (!username) {
+    username = document.getElementById('username').value;
+  }
 
   var cmd = '';
   switch (process.platform) {
@@ -181,4 +181,5 @@ function createIni(d) {
 
 module.exports = {
   GetIP,
+  InstallPackage,
 };

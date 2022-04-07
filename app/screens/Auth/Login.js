@@ -3,11 +3,16 @@ module.exports = {
   data() {
     return {
       title: 'Sign in to your account',
+      settingDone: false,
     };
   },
   methods: {
     login: function () {
-      this.$router.push('/logged');
+      if (this.settingDone) {
+        this.$router.push('/home');
+      } else {
+        this.$router.push('/logged');
+      }
     },
   },
 };

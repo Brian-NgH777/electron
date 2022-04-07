@@ -1,0 +1,23 @@
+.help-icon {
+  width: 28px;
+}
+
+.agreement {
+  max-height: 600px;
+}
+
+.camera-item .img {
+  height: 110px;
+}
+
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #f28c17; /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.frp-tutorial {
+  height: 200px;
+}

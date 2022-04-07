@@ -1,16 +1,26 @@
 require('./tailwind.config');
-const Vue = require('vue');
+const { createApp } = require('vue');
 const VueRouter = require('vue-router');
+const Vuex = require('vuex');
+const store = require('./store');
+
+// Import components
 const SetUp = require('./app/screens/SetUp');
 const Login = require('./app/screens/Auth/Login');
+const Dashboard = require('./app/screens/Home');
 
 const routes = [
-  { path: '/logged', component: SetUp },
   { path: '/', component: Login },
+  { path: '/logged', component: SetUp },
+  { path: '/home', component: Dashboard },
 ];
 
+const Store = Vuex.createStore(store);
+
 // Create App
-const App = Vue.createApp({});
+const App = createApp({
+  store: Store,
+});
 
 // Router
 const router = VueRouter.createRouter({
@@ -20,6 +30,7 @@ const router = VueRouter.createRouter({
 
 // App use
 App.use(router);
+App.use(Store);
 
 // Mount App
 App.mount('#app');
