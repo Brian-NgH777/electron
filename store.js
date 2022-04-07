@@ -1,7 +1,7 @@
 module.exports = {
   state() {
     return {
-      step: 2,
+      step: 1,
     };
   },
   mutations: {
