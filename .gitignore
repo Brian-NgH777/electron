@@ -1,5 +1,14 @@
 node_modules
+/src/lib/*/node_modules
+
 dist
-/.DS_Store
 release
 package-lock.json
+
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
