@@ -331,7 +331,37 @@
       <router-view> </router-view>
     </div>
 
+    <br />
+
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <p>username Auth</p>
+    <br />
+    <input type="text" id="username" name="username" /><br />
+    <button onclick="InstallPackage()">Install Package</button>
+    <p>------------------------------------------</p>
+    <br />
+    <p id="ip"></p>
+    <br />
+    <button onclick="GetIP()">GET IP</button>
+    <p>------------------------------------------</p>
+    <br />
+    <p>camere chose (để có IP)</p>
+    <input type="text" id="config" name="config" /><br />
+    <p>remote port(10000-20000)</p>
+    <input type="text" id="remote_port" name="remote_port" /><br />
+    <p>port</p>
+    <input type="text" id="port" name="port" placeholder="554" /><br />
+    <p>user camera</p>
+    <input type="text" id="usercamera" name="usercamera" /><br />
+    <p>password camera</p>
+    <input type="text" id="passwordcamera" name="passwordcamera" /><br />
+    <p>postfix</p>
+    <input type="text" id="postfix" name="postfix" placeholder="1" /><br />
+
+    <button onclick="CreateCamera()">Create Camera</button>
+
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script src="./renderer.js"></script>
   </body>
 </html>
