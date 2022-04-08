@@ -6,7 +6,10 @@
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder build -mwl",
-    "build": "rm -rf release/ && electron-builder build"
+    "build": "rm -rf release/ && electron-builder build",
+    "format": "prettier --write \"./**/*.js\"",
+    "lint": "prettier --check \"./**/*.js\"",
+    "eslint": "eslint \"./**/*.js\" --fix"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -18,8 +21,14 @@
   },
   "license": "CC0-1.0",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
     "electron": "^18.0.0",
-    "electron-builder": "^23.0.2"
+    "electron-builder": "^23.0.2",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.6.2"
   },
   "build": {
     "extends": null,

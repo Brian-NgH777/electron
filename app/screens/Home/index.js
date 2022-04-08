@@ -1,14 +1,14 @@
 module.exports = {
   template: '#home',
   data() {
-    return {};
+    return {}
   },
   methods: {
     logout() {
-      return this.$router.push('/');
+      return this.$router.push('/')
     },
     clearSettingDone() {
-      localStorage.removeItem('setting-done');
+      localStorage.removeItem('setting-done')
     },
   },
-};
+}

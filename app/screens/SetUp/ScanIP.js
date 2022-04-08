@@ -26,14 +26,14 @@ module.exports = {
         },
       ],
       loading: true,
-    };
+    }
   },
   methods: {
     nextStep() {
-      return this.$store.commit({ type: 'nextStep' });
+      return this.$store.commit({ type: 'nextStep' })
     },
   },
   mounted: function () {
-    setTimeout(() => (this.loading = false), 1500);
+    setTimeout(() => (this.loading = false), 1500)
   },
-};
+}
