@@ -15,7 +15,7 @@ const { mapGetters } = require('vuex')
 
 const routes = [
   { path: '/', component: Login },
-  { path: '/logged', component: SetUp },
+  { path: '/settings', component: SetUp },
   { path: '/home', component: Dashboard },
 ]
 
@@ -33,9 +33,14 @@ const App = createApp({
     ...mapGetters(['userPool']),
   },
   watch: {
-    userPool(val, prevVal) {
+    userPool(val) {
       if (val) {
-        this.verifySession()
+        this.verifySession().catch(() => {
+          this.$store.commit({
+            type: 'setAppLoading',
+            loading: false,
+          })
+        })
       }
     },
   },
@@ -67,7 +72,12 @@ const App = createApp({
                         type: 'setUser',
                         user: res.data,
                       })
-                      this.$router.push('/home')
+                      const areDone = localStorage.getItem('setting-done')
+                      if (areDone) {
+                        this.$router.push('/home')
+                      } else {
+                        this.$router.push('/settings')
+                      }
                     } else {
                       localStorage.clear()
                       this.$router.push('/')

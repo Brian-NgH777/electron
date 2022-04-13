@@ -11,18 +11,18 @@ let configs = []
 let pyData = []
 let auth
 
-async function Auth(username) {
-  try {
-    let url = `https://api-dev-revamp.viact.net/api/v2/frpc-tokens/${username}`
-    let { data } = await axios.get(url)
-    if (!data || !data.result) {
-      console.error('error:', error)
-    }
-    return { username, token: data.result.token }
-  } catch (error) {
-    console.error('error:', error)
-  }
-}
+// async function Auth(username) {
+//   try {
+//     let url = `https://api-dev-revamp.viact.net/api/v2/frpc-tokens/${username}`
+//     let { data } = await axios.get(url)
+//     if (!data || !data.result) {
+//       console.error('error:', error)
+//     }
+//     return { username, token: data.result.token }
+//   } catch (error) {
+//     console.error('error:', error)
+//   }
+// }
 
 // async function postScanCamera(username) {
 //     try {
@@ -318,7 +318,6 @@ function createIni() {
 }
 
 module.exports = {
-  Auth,
   GetIP,
   InstallPackage,
 }

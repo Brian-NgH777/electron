@@ -5,6 +5,7 @@ module.exports = {
       userPool: null,
       cognitoUser: null,
       user: null,
+      appLoading: false,
     }
   },
   mutations: {
@@ -23,6 +24,9 @@ module.exports = {
     setUser(state, payload) {
       state.user = payload.user
     },
+    setAppLoading(state, payload) {
+      state.appLoading = payload.loading
+    },
   },
   getters: {
     step(state) {
@@ -36,6 +40,9 @@ module.exports = {
     },
     user(state) {
       return state.user
+    },
+    appLoading(state) {
+      return state.appLoading
     },
   },
 }
