@@ -1,3 +1,7 @@
+body {
+  overflow: hidden;
+}
+
 .help-icon {
   width: 28px;
 }
@@ -19,5 +23,5 @@
 }
 
 .frp-tutorial {
-  height: 200px;
+  height: 400px;
 }

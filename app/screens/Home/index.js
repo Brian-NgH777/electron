@@ -9,7 +9,7 @@ module.exports = {
       const settingDone = localStorage.getItem('setting-done')
       Auth.signOut()
       localStorage.clear()
-      if (typeof settingDone !== 'undefined') {
+      if (settingDone) {
         localStorage.setItem('setting-done', settingDone)
       }
       return this.$router.push('/')

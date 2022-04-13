@@ -5,24 +5,23 @@ const axios = require('axios')
 const exec = util.promisify(require('child_process').exec)
 const fs = require('fs')
 const ini = require('ini')
+const { env } = require('./app/configs')
 
 let appName = 'Electron'
 let configs = []
 let pyData = []
 let auth
 
-// async function Auth(username) {
-//   try {
-//     let url = `https://api-dev-revamp.viact.net/api/v2/frpc-tokens/${username}`
-//     let { data } = await axios.get(url)
-//     if (!data || !data.result) {
-//       console.error('error:', error)
-//     }
-//     return { username, token: data.result.token }
-//   } catch (error) {
-//     console.error('error:', error)
-//   }
-// }
+async function Auth(username) {
+  try {
+    let url = `https://api-dev-revamp.viact.net/api/v2/frpc-tokens/${username}`
+    let { data } = await axios.get(url)
+    console.log(data)
+    return { username, token: data.result.token }
+  } catch (error) {
+    console.error('error:', error)
+  }
+}
 
 // async function postScanCamera(username) {
 //     try {
@@ -157,46 +156,34 @@ async function deleteCameraUrl(d) {
 }
 
 async function GetIP() {
-  document.getElementById('ip').innerHTML = 'scan..........'
-
   var cmd = ''
   switch (process.platform) {
     case 'darwin': {
-      console.log('darwin')
-      cmd = path.join(__dirname, '../py', 'pk-new')
+      cmd = path.join(__dirname, env === 'DEV' ? 'py' : '../py', 'pk-new')
       break
     }
     case 'win32': {
-      console.log('win32')
-      cmd = path.join(__dirname, '../py', 'pk-new.exe')
+      cmd = path.join(__dirname, env === 'DEV' ? 'py' : '../py', 'pk-new.exe')
       break
     }
     case 'linux': {
-      console.log('linux')
-      cmd = path.join(__dirname, '../py', 'pk-new')
+      cmd = path.join(__dirname, env === 'DEV' ? 'py' : '../py', 'pk-new')
       break
     }
     default: {
-      cmd = path.join(__dirname, '../py', 'pk-new')
+      cmd = path.join(__dirname, env === 'DEV' ? 'py' : '../py', 'pk-new')
     }
   }
-  console.log('cmdcmdcmdcmdcmdcmdcmd', cmd)
-  const { stdout, stderr } = await exec(cmd)
-  console.log('stderr:', stderr)
-  eval('var arr=' + stdout)
-  pyData = arr
-  document.getElementById('ip').innerHTML = stdout
+  const { stdout } = await exec(cmd)
+  const data = eval(stdout)
+  pyData.push(...data)
+  return data
 }
 
 function getAppDataPath() {
   switch (process.platform) {
     case 'darwin': {
-      return path.join(
-        process.env.HOME,
-        'Library',
-        'ApplicationSupport',
-        appName,
-      )
+      return path.join(process.env.HOME, 'Library', appName)
     }
     case 'win32': {
       return path.join(process.env.APPDATA, appName)
@@ -232,9 +219,8 @@ function getAppDataPath() {
 //     });
 // }
 
-async function InstallPackage() {
-  let un = document.getElementById('username').value
-  let d = await Auth(un)
+async function InstallPackage(username) {
+  let d = await Auth(username)
   console.log(d)
   auth = d
   await frpcClient(d)
@@ -246,22 +232,27 @@ async function frpcClient() {
 
   switch (process.platform) {
     case 'darwin': {
-      console.log('darwin')
-      pab = path.join(__dirname, '../frp', 'frpc-mac')
+      pab = path.join(__dirname, env === 'DEV' ? 'frp' : '../frp', 'frpc-mac')
       break
     }
     case 'win32': {
-      console.log('win32')
-      pab = path.join(__dirname, '../frp', 'frpc-win.exe')
+      pab = path.join(
+        __dirname,
+        env === 'DEV' ? 'frp' : '../frp',
+        'frpc-win.exe',
+      )
       break
     }
     case 'linux': {
-      console.log('linux')
-      pab = path.join(__dirname, '../frp', 'frpc-raspberry')
+      pab = path.join(
+        __dirname,
+        env === 'DEV' ? 'frp' : '../frp',
+        'frpc-raspberry',
+      )
       break
     }
     default: {
-      pab = path.join(__dirname, '../frp', 'frpc-mac')
+      pab = path.join(__dirname, env === 'DEV' ? 'frp' : '../frp', 'frpc-mac')
     }
   }
 
@@ -282,7 +273,7 @@ function createIni() {
     fs.mkdirSync(appDataDir)
   }
 
-  let pai = path.join(__dirname, '../frp', 'frpc.ini')
+  let pai = path.join(__dirname, env === 'DEV' ? 'frp' : '../frp', 'frpc.ini')
   const appDataFilePath = path.join(appDataDir, 'config_frpc.ini')
   var config = ini.parse(fs.readFileSync(pai, 'utf-8'))
 
@@ -318,6 +309,7 @@ function createIni() {
 }
 
 module.exports = {
+  Auth,
   GetIP,
   InstallPackage,
 }
