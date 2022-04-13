@@ -1,13 +1,14 @@
 const { useLogin } = require('../../hooks/Auth')
 const { mapGetters } = require('vuex')
+const { Auth } = require('../../../mac')
 
 module.exports = {
   template: '#login-page',
   data() {
     return {
       title: 'Sign in to your account',
-      username: 'louis_nguyen',
-      password: '123456789Aa',
+      username: 'louis_nguyen', // louis_nguyen
+      password: '123456789Aa', // 123456789Aa
       loginError: false,
       loadingLogin: false,
     }
@@ -27,6 +28,8 @@ module.exports = {
       if (result.err) {
         this.loginError = true
       } else if (result.data) {
+        console.log(result.data)
+        Auth('louis_nguyen')
         this.$store.commit({
           type: 'setUser',
           user: result.data,

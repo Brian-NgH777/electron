@@ -1,39 +1,32 @@
+const { GetIP } = require('../../../mac')
+
 module.exports = {
   template: '#scan-ip',
   data() {
     return {
-      cameraList: [
-        {
-          ip: '192.168.1.1',
-        },
-        {
-          ip: '192.168.1.2',
-        },
-        {
-          ip: '192.168.1.3',
-        },
-        {
-          ip: '192.168.1.4',
-        },
-        {
-          ip: '192.168.1.5',
-        },
-        {
-          ip: '192.168.1.6',
-        },
-        {
-          ip: '192.168.1.7',
-        },
-      ],
-      loading: true,
+      cameraList: [],
+      loading: false,
     }
   },
   methods: {
     nextStep() {
       return this.$store.commit({ type: 'nextStep' })
     },
+    async scanIP() {
+      this.loading = true
+      const data = await GetIP()
+      if (data) {
+        this.loading = false
+        const parseData = data.map(item => ({
+          ...item,
+          vendor: JSON.parse(item.vendor.replaceAll("'", '"')),
+        }))
+        this.cameraList = parseData
+        console.log('scanned ip =', parseData)
+      }
+    },
   },
   mounted: function () {
-    setTimeout(() => (this.loading = false), 1500)
+    this.scanIP()
   },
 }

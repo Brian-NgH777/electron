@@ -17,8 +17,8 @@ module.exports = {
     return {
       stepList: [
         'License Agreement',
-        'FRP Config',
-        'IP Scan',
+        'Communication setup',
+        'Internal network scan',
         'Status Summarize',
         'Go To Dashboard',
       ],
