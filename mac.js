@@ -5,7 +5,7 @@ const axios = require('axios')
 const exec = util.promisify(require('child_process').exec)
 const fs = require('fs')
 const ini = require('ini')
-const { env } = require('./app/configs')
+const { isDev } = require('./app/configs')
 
 let appName = 'Electron'
 let configs = []
@@ -159,19 +159,19 @@ async function GetIP() {
   var cmd = ''
   switch (process.platform) {
     case 'darwin': {
-      cmd = path.join(__dirname, env === 'DEV' ? 'py' : '../py', 'pk-new')
+      cmd = path.join(__dirname, isDev ? 'py' : '../py', 'pk-new')
       break
     }
     case 'win32': {
-      cmd = path.join(__dirname, env === 'DEV' ? 'py' : '../py', 'pk-new.exe')
+      cmd = path.join(__dirname, isDev ? 'py' : '../py', 'pk-new.exe')
       break
     }
     case 'linux': {
-      cmd = path.join(__dirname, env === 'DEV' ? 'py' : '../py', 'pk-new')
+      cmd = path.join(__dirname, isDev ? 'py' : '../py', 'pk-new')
       break
     }
     default: {
-      cmd = path.join(__dirname, env === 'DEV' ? 'py' : '../py', 'pk-new')
+      cmd = path.join(__dirname, isDev ? 'py' : '../py', 'pk-new')
     }
   }
   const { stdout } = await exec(cmd)
@@ -232,27 +232,19 @@ async function frpcClient() {
 
   switch (process.platform) {
     case 'darwin': {
-      pab = path.join(__dirname, env === 'DEV' ? 'frp' : '../frp', 'frpc-mac')
+      pab = path.join(__dirname, isDev ? 'frp' : '../frp', 'frpc-mac')
       break
     }
     case 'win32': {
-      pab = path.join(
-        __dirname,
-        env === 'DEV' ? 'frp' : '../frp',
-        'frpc-win.exe',
-      )
+      pab = path.join(__dirname, isDev ? 'frp' : '../frp', 'frpc-win.exe')
       break
     }
     case 'linux': {
-      pab = path.join(
-        __dirname,
-        env === 'DEV' ? 'frp' : '../frp',
-        'frpc-raspberry',
-      )
+      pab = path.join(__dirname, isDev ? 'frp' : '../frp', 'frpc-raspberry')
       break
     }
     default: {
-      pab = path.join(__dirname, env === 'DEV' ? 'frp' : '../frp', 'frpc-mac')
+      pab = path.join(__dirname, isDev ? 'frp' : '../frp', 'frpc-mac')
     }
   }
 
@@ -273,7 +265,7 @@ function createIni() {
     fs.mkdirSync(appDataDir)
   }
 
-  let pai = path.join(__dirname, env === 'DEV' ? 'frp' : '../frp', 'frpc.ini')
+  let pai = path.join(__dirname, isDev ? 'frp' : '../frp', 'frpc.ini')
   const appDataFilePath = path.join(appDataDir, 'config_frpc.ini')
   var config = ini.parse(fs.readFileSync(pai, 'utf-8'))
 

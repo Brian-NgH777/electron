@@ -166,7 +166,7 @@
         <div class="p-4">
           <div
             class="bg-gray-100 w-full rounded-lg frp-tutorial bg-cover bg-no-repeat bg-center"
-            :style="{'background-image': 'url(./assets/images/iot-connect.png)'}" />
+            v-bind:style="frpTutorialStyle" />
           <div v-if="process >= 1" class="mt-4">
             <progress class="progress w-full h-4 progress-primary" :value="process" max="100"></progress>
             <div>~ {{getTextStep(process)?.title ?? prevTitle}}</div>

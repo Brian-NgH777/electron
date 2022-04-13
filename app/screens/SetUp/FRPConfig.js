@@ -1,10 +1,18 @@
 // const notifier = require('node-notifier')
 const { InstallPackage } = require('../../../mac')
+const { isDev } = require('../../configs')
 
 module.exports = {
   template: '#frp-config',
   data() {
     return {
+      frpTutorialStyle: {
+        backgroundImage: `url(${
+          isDev
+            ? './assets/images/iot-connect.png'
+            : '../assets/images/iot-connect.png'
+        })`,
+      },
       connected: false,
       process: 0,
       intervalProcess: null,
