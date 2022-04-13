@@ -6,8 +6,12 @@ module.exports = {
   },
   methods: {
     logout() {
+      const settingDone = localStorage.getItem('setting-done')
       Auth.signOut()
       localStorage.clear()
+      if (typeof settingDone !== 'undefined') {
+        localStorage.setItem('setting-done', settingDone)
+      }
       return this.$router.push('/')
     },
     clearSettingDone() {
