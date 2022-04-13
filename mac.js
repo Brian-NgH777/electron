@@ -13,10 +13,6 @@ let auth
 
 async function Auth(username) {
   try {
-    // login logic => get username
-    if (username.length === 0) {
-      console.error('error:', 'username miss')
-    }
     let url = `https://api-dev-revamp.viact.net/api/v2/frpc-tokens/${username}`
     let { data } = await axios.get(url)
     if (!data || !data.result) {
@@ -322,6 +318,7 @@ function createIni() {
 }
 
 module.exports = {
+  Auth,
   GetIP,
   InstallPackage,
 }
