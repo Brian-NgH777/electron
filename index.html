@@ -129,7 +129,7 @@
               </ul>
               <div class="mt-auto help p-2">
                 <div class="flex items-center cursor-pointer">
-                  <img class="help-icon" src="./assets/images/help.png" alt="help icon">
+                  <img class="help-icon" :src="helpIconUrl" alt="help icon">
                   <p class="ml-2">Help</p>
                 </div>
               </div>
@@ -224,7 +224,7 @@
             <div class="camera-list space-y-4">
               <div v-for="(item,index) in cameraList" class="grid grid-cols-3 gap-4 camera-item cursor-pointer">
                 <div class="bg-zinc-300 flex flex-row items-center justify-center img rounded-lg">
-                  <img src="./assets/images/padlock.png" alt="padlock">
+                  <img :src="padlockIconUrl" alt="padlock">
                 </div>
                 <div class="col-span-2">
                   <div class="flex flex-col justify-center h-full">
@@ -343,41 +343,11 @@
       </div>
     </script>
 
+    <!-- =============================== RENDERED CONTAINER ===== -->
     <div id="app">
       <router-view> </router-view>
     </div>
-
-    <br />
-
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- <p>username Auth</p>
-    <br />
-    <input type="text" id="username" name="username" /><br />
-    <button onclick="InstallPackage()">Install Package</button>
-    <p>------------------------------------------</p>
-    <br />
-    <p id="ip"></p>
-    <br />
-    <button onclick="GetIP()">GET IP</button>
-    <p>------------------------------------------</p>
-    <br />
-    <p>camere chose (để có IP)</p>
-    <input type="text" id="config" name="config" /><br />
-    <p>remote port(10000-20000)</p>
-    <input type="text" id="remote_port" name="remote_port" /><br />
-    <p>port</p>
-    <input type="text" id="port" name="port" placeholder="554" /><br />
-    <p>user camera</p>
-    <input type="text" id="usercamera" name="usercamera" /><br />
-    <p>password camera</p>
-    <input type="text" id="passwordcamera" name="passwordcamera" /><br />
-    <p>postfix</p>
-    <input type="text" id="postfix" name="postfix" placeholder="1" /><br />
-
-    <button onclick="CreateCamera()">Create Camera</button> -->
-
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script src="./renderer.js"></script>
   </body>
 </html>

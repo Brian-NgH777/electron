@@ -1,4 +1,5 @@
 const { GetIP } = require('../../../mac')
+const { isDev } = require('../../configs')
 
 module.exports = {
   template: '#scan-ip',
@@ -6,6 +7,9 @@ module.exports = {
     return {
       cameraList: [],
       loading: false,
+      padlockIconUrl: isDev
+        ? './assets/images/padlock.png'
+        : '../assets/images/padlock.png',
     }
   },
   methods: {

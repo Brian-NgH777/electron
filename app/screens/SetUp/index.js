@@ -4,6 +4,7 @@ const Agreement = require('./Agreement')
 const FRPConfig = require('./FRPConfig')
 const ScanIp = require('./ScanIP')
 const StatusSummarize = require('./StatusSummarize.js')
+const { isDev } = require('../../configs')
 
 module.exports = {
   template: '#setup-page',
@@ -22,6 +23,9 @@ module.exports = {
         'Status Summarize',
         'Go To Dashboard',
       ],
+      helpIconUrl: isDev
+        ? './assets/images/help.png'
+        : '../assets/images/help.png',
     }
   },
   computed: {
