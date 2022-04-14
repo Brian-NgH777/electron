@@ -25,3 +25,9 @@ body {
 .frp-tutorial {
   height: 400px;
 }
+
+.review {
+  height: 200px !important;
+  overflow: hidden;
+  background-color: #252a34;
+}
