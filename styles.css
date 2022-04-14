@@ -2,6 +2,36 @@ body {
   overflow: hidden;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 90%;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-right: 4px solid #2a303c;
+  background-clip: padding-box;
+  background: #353c48;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #191d24;
+}
+
+::-webkit-scrollbar-track-piece:end {
+    background: transparent;
+    margin-bottom: 20px;
+}
+
+::-webkit-scrollbar-track-piece:start {
+    background: transparent;
+    margin-top: 20px;
+}
+
 .help-icon {
   width: 28px;
 }

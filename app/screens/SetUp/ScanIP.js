@@ -70,7 +70,7 @@ module.exports = {
         setTimeout(() => {
           this.testLoading = false
           this.testOK = true
-        }, 3000)
+        }, 5000)
       }
     },
     async scanIP() {
