@@ -29,5 +29,21 @@ body {
 .review {
   height: 200px !important;
   overflow: hidden;
-  background-color: #252a34;
+  background-color: #353c48;
+}
+
+.prefix-select {
+  background-color: #191d24 !important;
+}
+.prefix-select:focus {
+  outline: 0 !important;
+}
+
+.full-link {
+  height: 36px;
+  max-height: 36px;
+  background-color: #191d24;
+}
+.full-link p {
+  font-size: 10px;
 }

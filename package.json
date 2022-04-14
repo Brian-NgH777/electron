@@ -4,7 +4,8 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "npm run format && npm run lint && electron .",
+    "prestart": "npm run format && npm run lint",
+    "start": "electron .",
     "dist": "electron-builder build -mwl",
     "build": "rm -rf release/ && electron-builder build",
     "format": "prettier --write \"./**/*.js\"",
