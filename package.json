@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run format && npm run lint && electron .",
     "dist": "electron-builder build -mwl",
-    "build": "rm -rf release/ && electron-builder build",
+    "build": "rm -rf release/ && electron-builder build -mwl",
     "format": "prettier --write \"./**/*.js\"",
     "lint": "prettier --check \"./**/*.js\"",
     "eslint": "eslint \"./**/*.js\" --fix"
