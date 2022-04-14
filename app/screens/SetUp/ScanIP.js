@@ -19,6 +19,9 @@ module.exports = {
     nextStep() {
       return this.$store.commit({ type: 'nextStep' })
     },
+    backStep() {
+      return this.$store.commit({ type: 'backStep' })
+    },
     async scanIP() {
       this.loading = true
       const data = await GetIP()

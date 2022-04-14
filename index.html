@@ -152,7 +152,7 @@
         </div>
         <div class="flex justify-end items-center">
           <button
-            class="btn btn-wide"
+            class="btn w-36"
             :class="{'btn-disabled': !isBottom, 'text-gray-400': !isBottom, 'btn-primary': isBottom}"
             v-on:click="nextStep">
             Next
@@ -172,11 +172,14 @@
             <div>~ {{getTextStep(process)?.title ?? prevTitle}}</div>
           </div>
         </div>
-        <div class="flex justify-end items-center space-x-4">
-          <button class="btn btn-wide btn-primary" v-on:click="connect">Connect</button>
-          <button class="btn btn-wide btn-primary" :class="{'btn-disabled text-gray-400': !connected}" v-on:click="nextStep">
-            Next
-          </button>
+        <div class="flex justify-between items-center px-4">
+          <p class="m-0 underline text-blue-400 cursor-pointer" v-on:click="backStep">Back</p>
+          <div class="space-x-4">
+            <button class="btn btn-primary w-36" v-on:click="connect">Connect</button>
+            <button class="btn btn-primary w-36" :class="{'btn-disabled text-gray-400': !connected}" v-on:click="nextStep">
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </script>
@@ -211,7 +214,7 @@
             </div>
           </div> -->
           <!-- v-if="!loading" -->
-          <div  class="other-camera text-sm">
+          <div v-if="!loading" class="other-camera text-sm">
             <div class="flex flex-row justify-between items-center mb-4">
               <p class="font-semibold">3rd party cameras</p>
               <div class="flex items-center justify-end flex-row">
@@ -295,7 +298,7 @@
                 <p class="cursor-pointer text-blue-400">Select all</p>
               </div>
             </div>
-            <div class="camera-list space-y-4">
+            <div class="camera-list space-y-4 overflow-auto" :style="{'max-height': '500px'}">
               <div v-for="(item,index) in cameraList" class="grid grid-cols-3 gap-4 camera-item cursor-pointer">
                 <div class="bg-zinc-300 flex flex-row items-center justify-center img rounded-lg">
                   <img :src="padlockIconUrl" alt="padlock">
@@ -313,9 +316,9 @@
             </div>
           </div>
         </div>
-        <div :style="{'min-height': '64px'}" class="mt-4" />
-        <div class="flex justify-end items-center fixed right-0 bottom-0 pr-8 pb-4">
-          <button class="btn btn-wide btn-primary" :disabled="loading" v-on:click="nextStep">
+        <div class="flex justify-between items-center right-0 bottom-0 px-4 pb-2">
+          <p class="m-0 underline text-blue-400 cursor-pointer" v-on:click="backStep">Back</p>
+          <button class="btn w-36 btn-primary" :disabled="loading" v-on:click="nextStep">
             Next
           </button>
         </div>
@@ -323,13 +326,16 @@
     </script>
 
     <script type="text/x-template" id="status-summarize">
-      <div class="h-full flex justify-center items-center text-4xl">✓ Almost Done</div>
-      <div :style="{'min-height': '64px'}" class="mt-4" />
-        <div class="flex justify-end items-center fixed right-0 bottom-0 pr-8 pb-4">
+      <div class="h-full flex flex-col justify-between items-center">
+        <div></div>
+        <p class="text-5xl">✓ Almost Done</p>
+        <div class="px-4 pb-2 flex flex-row w-full justify-between items-center">
+          <p class="m-0 underline text-blue-400 cursor-pointer" v-on:click="backStep">Back</p>
           <button class="btn btn-wide btn-primary" v-on:click="nextStep">
             Go to dashboard
           </button>
         </div>
+      </div>
     </script>
 
     <script type="text/x-template" id="home">

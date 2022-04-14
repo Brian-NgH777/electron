@@ -46,6 +46,9 @@ module.exports = {
       if (!this.connected) return
       return this.$store.commit({ type: 'nextStep' })
     },
+    backStep() {
+      return this.$store.commit({ type: 'backStep' })
+    },
     connect() {
       this.intervalProcess = setInterval(() => {
         this.process += 1

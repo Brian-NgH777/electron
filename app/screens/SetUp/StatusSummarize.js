@@ -9,5 +9,8 @@ module.exports = {
       localStorage.setItem('setting-done', true)
       return this.$router.push('/home')
     },
+    backStep() {
+      return this.$store.commit({ type: 'backStep' })
+    },
   },
 }
