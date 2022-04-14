@@ -210,13 +210,87 @@
               </div>
             </div>
           </div> -->
-          <div v-if="!loading" class="other-camera text-sm">
+          <!-- v-if="!loading" -->
+          <div  class="other-camera text-sm">
             <div class="flex flex-row justify-between items-center mb-4">
               <p class="font-semibold">3rd party cameras</p>
               <div class="flex items-center justify-end flex-row">
-                <p class="cursor-pointer text-blue-400">Bulk Authenticate</p>
+                <div class="bulk-auth">
+                  <label
+                    for="bulk-auth-modal"
+                    class="cursor-pointer text-blue-400">
+                    Bulk Authenticate
+                  </label>
+                  <input type="checkbox" id="bulk-auth-modal" class="modal-toggle">
+                  <div class="modal modal-middle">
+                    <div class="modal-box w-5/12">
+                      <h3 class="font-bold text-lg text-white">Add a username and password.</h3>
+                      <div class="py-4 space-y-4">
+                        <input
+                          type="text"
+                          placeholder="Username"
+                          class="input input-bordered w-full text-white">
+                        <input
+                          type="text"
+                          placeholder="Password"
+                          class="input input-bordered w-full text-white">
+                      </div>
+                      <div class="modal-action space-x-4">
+                        <label for="bulk-auth-modal" class="btn">Cancel</label>
+                        <label for="bulk-auth-modal" class="btn btn-primary">Done</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="divider divider-horizontal"></div>
-                <p class="cursor-pointer text-blue-400">Add RTSP / RTMP</p>
+                <div class="add-camera">
+                  <label
+                    for="add-camera-modal"
+                    class="cursor-pointer text-blue-400">
+                    Add RTSP / RTMP
+                  </label>
+                  <input type="checkbox" id="add-camera-modal" class="modal-toggle">
+                  <div class="modal modal-middle">
+                    <div class="modal-box w-5/12">
+                      <h3 class="font-bold text-lg text-white">Add RTSP / RTMP</h3>
+                      <div class="py-4 space-y-4">
+                        <div class="flex items-center justify-between space-x-4">
+                          <input
+                            type="text"
+                            placeholder="IP Address"
+                            class="input input-bordered w-full text-white w-9/12">
+                          <input
+                            type="text"
+                            placeholder="Port"
+                            class="input input-bordered w-full text-white w-3/12"
+                            value="554">
+                        </div>
+                        <div class="flex items-center justify-between space-x-4">
+                          <input
+                            type="text"
+                            placeholder="Username"
+                            class="input input-bordered w-full text-white">
+                          <input
+                            type="password"
+                            placeholder="Password"
+                            class="input input-bordered w-full text-white">
+                        </div>
+                        <input
+                          type="text"
+                          placeholder="RTSP://xxx.xxx.xxx.xxx:554/example/1"
+                          class="input input-bordered w-full text-white">
+                        <button class="btn btn-neutral w-full">Connect</button>
+                        <div class="review w-full rounded-lg flex justify-center items-center">
+                          <img :src="noConnectionIcon" alt="no connection">
+                        </div>
+                      </div>
+                      <div class="modal-action space-x-4">
+                        <label for="add-camera-modal" class="btn">Cancel</label>
+                        <label for="add-camera-modal" class="btn btn-primary">Add</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="divider divider-horizontal"></div>
                 <p class="cursor-pointer text-blue-400">Select all</p>
               </div>

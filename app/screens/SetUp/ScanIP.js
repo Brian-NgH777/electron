@@ -10,6 +10,9 @@ module.exports = {
       padlockIconUrl: isDev
         ? './assets/images/padlock.png'
         : '../assets/images/padlock.png',
+      noConnectionIcon: isDev
+        ? './assets/images/no-connection.png'
+        : '../assets/images/no-connection.png',
     }
   },
   methods: {
