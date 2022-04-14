@@ -11,5 +11,5 @@ const API_URL_V2 =
 module.exports = {
   API_URL,
   API_URL_V2,
-  isDev: false,
+  isDev: true,
 }
