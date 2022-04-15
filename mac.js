@@ -6,7 +6,13 @@ var AWS = require('aws-sdk')
 const exec = util.promisify(require('child_process').exec)
 const fs = require('fs')
 const ini = require('ini')
-const { isDev, AWS_S3_ACCESS_KEY, AWS_S3_SECRET_KEY, AWS_S3_REGION, AWS_S3_BUCKET } = require('./app/configs')
+const {
+  isDev,
+  AWS_S3_ACCESS_KEY,
+  AWS_S3_SECRET_KEY,
+  AWS_S3_REGION,
+  AWS_S3_BUCKET,
+} = require('./app/configs')
 
 let appName = 'Electron'
 let configs = []
@@ -46,7 +52,7 @@ async function CreateCamera() {
   let ssUrl = await createSnapShotUrl(snapShotUrl)
 
   // create camera (API củ)
-  await createCameraServer({snapshot: ssUrl, web_url: stUrl, ...body});
+  await createCameraServer({ snapshot: ssUrl, web_url: stUrl, ...body })
 
   // config frpc
   await frpcClient()
@@ -74,7 +80,6 @@ async function uploadFromStream(arrBuffer) {
       ACL: 'public-read',
     })
     .promise()
-
 }
 
 async function createSnapShotUrl(snapShotUrl) {
@@ -107,7 +112,7 @@ async function createCameraServer(body) {
       },
       angle_view: 90,
       direction: 90,
-      web_url: body.web_url
+      web_url: body.web_url,
     })
     if (!status || status !== 201) {
       console.error('error:', error)
@@ -119,10 +124,9 @@ async function createCameraServer(body) {
 }
 
 async function deleteCamera(item) {
-
   // remove item in array tổng (configs)
-  let i = configs.findIndex(element => element.localPort > item.localPort);
-  delete configs[i];
+  let i = configs.findIndex(element => element.localPort > item.localPort)
+  delete configs[i]
 
   // delete forward
   await deleteFrpcForward({ remote_port: 'remote_port' })
@@ -353,5 +357,4 @@ module.exports = {
   Auth,
   GetIP,
   InstallPackage,
-  createCameraUrl,
 }

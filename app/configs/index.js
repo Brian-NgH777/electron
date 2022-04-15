@@ -15,10 +15,10 @@ const CAMERA_URL_REGEX = new RegExp(
 module.exports = {
   API_URL,
   API_URL_V2,
-  AWS_S3_ACCESS_KEY:'AKIA2NACRACL2LO5LTEY',
-  AWS_S3_SECRET_KEY:'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',
-  AWS_S3_REGION:'ap-southeast-1',
-  AWS_S3_BUCKET:'customindz-shinobi',
+  AWS_S3_ACCESS_KEY: 'AKIA2NACRACL2LO5LTEY',
+  AWS_S3_SECRET_KEY: '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',
+  AWS_S3_REGION: 'ap-southeast-1',
+  AWS_S3_BUCKET: 'customindz-shinobi',
   isDev: false,
   CAMERA_URL_REGEX,
 }
