@@ -3,12 +3,10 @@ var path = require('path')
 const util = require('util')
 const axios = require('axios')
 var AWS = require('aws-sdk')
-var Stream = require('stream')
-// import { Stream, PassThrough } from 'stream'
 const exec = util.promisify(require('child_process').exec)
 const fs = require('fs')
 const ini = require('ini')
-const { isDev } = require('./app/configs')
+const { isDev, AWS_S3_ACCESS_KEY, AWS_S3_SECRET_KEY, AWS_S3_REGION, AWS_S3_BUCKET } = require('./app/configs')
 
 let appName = 'Electron'
 let configs = []
@@ -26,105 +24,75 @@ async function Auth(username) {
   }
 }
 
-// async function postScanCamera(username) {
-//     try {
-//         let url = `https://api-dev-revamp.viact.net/api/v2/cameras/detection/scan/create`
-//         let { status, data } = await axios.post(url, {username, data: auth});
-//         if(!status || status !== 201 ) {
-//             console.error('error:', error);
-//         }
-//         console.log("postScanCamera", data);
-//     } catch (error) {
-//         console.error('error:', error);
-//     }
-// }
-
 async function CreateCamera() {
-  // let i = document.getElementById('config').value
-  // let port = document.getElementById('port').value
-  // let remote_port = document.getElementById('remote_port').value
-  // let usercamera = document.getElementById('usercamera').value
-  // let passwordcamera = document.getElementById('passwordcamera').value
-  // let postfix = document.getElementById('postfix').value
+  let i = document.getElementById('config').value
+  let port = document.getElementById('port').value
+  let remote_port = document.getElementById('remote_port').value
+  let usercamera = document.getElementById('usercamera').value
+  let passwordcamera = document.getElementById('passwordcamera').value
+  let postfix = document.getElementById('postfix').value
 
-  // console.log('CreateCamera', pyData[i])
-  // let item = {
-  //   remotePort: remote_port,
-  //   localPort: port,
-  //   localIp: pyData[i].ip,
-  // }
-  // configs.push(item)
+  console.log('CreateCamera', pyData[i])
+  let item = {
+    remotePort: remote_port,
+    localPort: port,
+    localIp: pyData[i].ip,
+  }
+  configs.push(item)
 
-  // // create forward
-  // await createFrpcForward(item)
+  // create forward
+  await createFrpcForward(item)
 
-  // // create createMJPEGStream
-  // let stUrl = await createMJPEGStream({
-  //   remotePort: remote_port,
-  //   cameraVideoPath: postfix,
-  // })
-  // console.log('createMJPEGStream URLURLURLURLURL:', stUrl)
+  // create createMJPEGStream
+  let stUrl = await createMJPEGStreamUrl({
+    remotePort: remote_port,
+    cameraVideoPath: postfix,
+  })
 
   // create createSnapShotUrl
-  let ssUrl = await createSnapShotUrl(
-    'https://i.picsum.photos/id/102/200/300.jpg?hmac=nMR8Al8ea36mJZJbJNFVaddoG8aP4gUCDiEm4r6PUbk',
-  )
-  console.log('createSnapShotUrl URLURLURLURLURL:', ssUrl)
+  let ssUrl = await createSnapShotUrl(snapShotUrl)
 
-  // // create camera (API củ)
-  // await createCameraServer({snapshot: ssUrl, web_url: stUrl, ...body});
+  // create camera (API củ)
+  await createCameraServer({snapshot: ssUrl, web_url: stUrl, ...body});
 
-  // // config frpc
-  // await frpcClient(item)
+  // config frpc
+  await frpcClient()
 
   // Note: dùng promise.all
 }
 
-function uploadFromStream(fileResponse) {
-  // const s3 = new S3({
-  //   region: process.env.AWS_S3_REGION,
-  //   credentials: {
-  //     accessKeyId: process.env.AWS_S3_ACCESS_KEY,
-  //     secretAccessKey: process.env.AWS_S3_SECRET_KEY,
-  //   },
-  // });
+async function uploadFromStream(arrBuffer) {
+  const s3 = new AWS.S3({
+    region: AWS_S3_REGION,
+    credentials: {
+      accessKeyId: AWS_S3_ACCESS_KEY,
+      secretAccessKey: AWS_S3_SECRET_KEY,
+    },
+  })
 
-  const s3 = new AWS.S3()
+  var buffer = Buffer.from(arrBuffer)
 
-  const passThrough = new Stream.PassThrough()
-  const promise = s3
+  return await s3
     .upload({
-      Bucket: 'customindz-shinobi',
-      Key: 'inamge.png',
+      Bucket: AWS_S3_BUCKET,
+      Key: `${Date.now()}-snapshot.png`,
+      Body: buffer,
+      ContentType: 'image/png',
       ACL: 'public-read',
-      ContentType: fileResponse.headers['content-type'],
-      ContentLength: fileResponse.headers['content-length'],
-      Body: passThrough,
     })
     .promise()
-  return { passThrough, promise }
+
 }
 
 async function createSnapShotUrl(snapShotUrl) {
-  const responseStream = await downloadFile(snapShotUrl)
-
-  const { passThrough, promise } = uploadFromStream(responseStream)
-
-  responseStream.data.pipe(passThrough)
-
-  return promise
-    .then(result => {
-      console.log('resultresultresultresultresult', result)
-      return result.Location
-    })
-    .catch(e => {
-      throw e
-    })
+  const res = await downloadFile(snapShotUrl)
+  const data = await uploadFromStream(res.data)
+  return data.Location
 }
 
 async function downloadFile(fileUrl) {
-  return axios.get(fileUrl, {
-    responseType: 'stream',
+  return await axios.get(fileUrl, {
+    responseType: 'arraybuffer',
   })
 }
 
@@ -135,9 +103,8 @@ async function createCameraServer(body) {
       company_code: 'TZS',
       engines: ['danger-zone', 'safety-helmet'],
       name: 'Camera Tech 7',
-      snapshot:
-        'https://customindz-shinobi.s3.ap-southeast-1.amazonaws.com/3797da2a-dbf2-4fab-a4e2-af1e14a80136', // body.snapshot
-      snapshot_created_at: '2022-02-09 05:44:42', // date now
+      snapshot: body.snapshot,
+      snapshot_created_at: Date.now(),
       type: '',
       color: '#ff9800',
       enable_status: true,
@@ -147,7 +114,7 @@ async function createCameraServer(body) {
       },
       angle_view: 90,
       direction: 90,
-      web_url: '', // body.web_url
+      web_url: body.web_url
     })
     if (!status || status !== 201) {
       console.error('error:', error)
@@ -158,10 +125,11 @@ async function createCameraServer(body) {
   }
 }
 
-async function deleteCamera() {
-  // chosse camera
+async function deleteCamera(item) {
 
   // remove item in array tổng (configs)
+  let i = configs.findIndex(element => element.localPort > item.localPort);
+  delete configs[i];
 
   // delete forward
   await deleteFrpcForward({ remote_port: 'remote_port' })
@@ -172,7 +140,7 @@ async function deleteCamera() {
   // delete camera (API củ)
 
   // config frpc
-  await frpcClient(item)
+  await frpcClient()
 
   // Note: dùng promise.all
 }
@@ -208,7 +176,7 @@ async function deleteFrpcForward(d) {
   }
 }
 
-async function createMJPEGStream(d) {
+async function createMJPEGStreamUrl(d) {
   try {
     let url = `https://api.viact.net/cgi-config/camera-url`
     let { status, data } = await axios.post(url, {
@@ -311,7 +279,7 @@ async function InstallPackage(username) {
   let d = await Auth(username)
   console.log(d)
   auth = d
-  await frpcClient(d)
+  await frpcClient()
 }
 
 async function frpcClient() {
