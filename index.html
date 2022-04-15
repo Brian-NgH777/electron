@@ -209,26 +209,6 @@
             <div class="loader animate-spin"></div>
             <span class="ml-4 text-sm">Scaning camera. This action can take up to 20 seconds ....</span>
           </div>
-          <!-- <div v-if="!loading" class="viact-camera text-sm" :style="{'margin-bottom': '1.785rem'}">
-            <div class="flex flex-row justify-between items-center mb-4">
-              <p class="font-semibold">Viact cameras</p>
-              <p class="cursor-pointer text-blue-400">Select all</p>
-            </div>
-            <div class="grid grid-cols-3 gap-4 camera-item cursor-pointer">
-              <div class="bg-zinc-300 flex flex-row items-center justify-center img rounded-lg">
-                <img src="./assets/images/padlock.png" alt="padlock">
-              </div>
-              <div class="col-span-2">
-                <div class="flex flex-col justify-center h-full">
-                  <p class="ip font-semibold text-base mb-2">192.168.1.1</p>
-                  <div class="name">
-                    <span>002154FDSAF</span> -
-                    <span>Viact-JKL2</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
           <!-- v-if="!loading" -->
           <div class="other-camera text-sm">
             <div class="flex flex-row justify-between items-center mb-4">
@@ -270,13 +250,13 @@
                 <div class="divider divider-horizontal"></div>
                 <div class="add-camera">
                   <label
-                    for="add-camera-modal"
-                    class="cursor-pointer text-blue-400">
+                    class="cursor-pointer text-blue-400"
+                    v-on:click="openAddCameraModal">
                     Add RTSP / RTMP
                   </label>
-                  <input type="checkbox" id="add-camera-modal" class="modal-toggle">
+                  <input type="checkbox" :checked="addCameraModal" id="add-camera-modal" class="modal-toggle">
                   <div class="modal modal-middle">
-                    <div class="modal-box max-w-2xl">
+                    <div class="modal-box max-w-2xl overflow-hidden">
                       <h3 class="font-bold text-lg text-white title-add-camera pb-2 flex flex-row items-center justify-between">
                         <span>Add RTSP / RTMP</span>
                         <select
@@ -290,58 +270,16 @@
                             :value="item">{{item.name}}</option>
                         </select>
                       </h3>
-                      <div class="overflow-auto dark-scroll scroll-no-right" :style="{height: '500px'}">
+                      <p class="text-gray-100 italic text-xs">Notes: You can select the camera branch to get the template URL</p>
+                      <p class="text-gray-100 italic text-xs mb-4">ex: http://admin:viact123@192.168.1.1:554/cgi-bin/snapshot.cgi</p>
+                      <div class="overflow-auto dark-scroll scroll-no-right">
                         <div class="py-4 space-y-4">
-                          <!-- <div class="flex items-center justify-between space-x-4">
-                            <div class="form-control w-9/12">
-                              <label class="label">
-                                <span class="label-text">IP Address</span>
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="IP Address"
-                                class="input input-bordered w-full text-white input-no-outline"
-                                v-model="form.ip">
-                            </div>
-                            <div class="form-control w-3/12">
-                              <label class="label">
-                                <span class="label-text">Port</span>
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Port"
-                                class="input input-bordered w-full text-white input-no-outline"
-                                v-model="form.port">
-                            </div>
-                          </div>
-                          <div class="flex items-center justify-between space-x-4">
-                            <div class="form-control w-6/12">
-                              <label class="label">
-                                <span class="label-text">Username</span>
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="Username"
-                                class="input input-bordered w-full text-white input-no-outline"
-                                v-model="form.username">
-                            </div>
-                            <div class="form-control w-6/12">
-                              <label class="label">
-                                <span class="label-text">Password</span>
-                              </label>
-                              <input
-                                type="password"
-                                placeholder="Password"
-                                class="input input-bordered w-full text-white input-no-outline"
-                                v-model="form.password">
-                            </div>
-                          </div> -->
                           <div class="form-control w-full">
                             <label class="input-group">
                               <span><img :style="{width: '20px'}" :src="liveIcon" alt="live"></span>
                               <input
                                 type="text"
-                                v-model="link"
+                                v-model="form.link"
                                 placeholder="Live streaming url"
                                 class="input input-bordered text-white flex-1 w-full input-no-outline" />
                             </label>
@@ -351,7 +289,7 @@
                               <span><img :style="{width: '20px'}" :src="snapIcon" alt="snap"></span>
                               <input
                                 type="text"
-                                v-model="snapLink"
+                                v-model="form.snapLink"
                                 placeholder="Snapshot url"
                                 class="input input-bordered text-white flex-1 w-full input-no-outline" />
                             </label>
@@ -360,19 +298,27 @@
                           <button
                           v-on:click="testConnection"
                             class="btn btn-neutral w-full capitalize">Test connection</button>
-                          <div class="review w-full rounded-lg flex justify-center items-center relative">
-                            <img v-if="!testLoading && !testOK" :src="noConnectionIcon" alt="no connection">
-                            <progress v-if="testLoading" class="progress w-56"></progress>
-                            <div v-if="testOK && !testLoading" class="absolute left-0 bottom-0 w-full full-link py-2 px-4 flex items-center">
-                              <p class="text-white">{{link}} <span class="text-green-600 text-base">✓</span></p>
+                          <div class="flex items-center space-x-4">
+                            <div class="review w-full rounded-lg flex justify-center items-center relative w-3/5">
+                              <img v-if="!testLoading && !testOK" :src="noConnectionIcon" alt="no connection">
+                              <progress v-if="testLoading" class="progress w-56"></progress>
+                            </div>
+                            <div class="form-control w-full w-2/5">
+                              <label class="label">
+                                <span class="label-text">Camera name</span>
+                              </label>
+                              <input
+                                v-model="form.cameraName"
+                                type="text"
+                                placeholder="ex. Living room"
+                                class="input input-bordered w-full text-white">
                             </div>
                           </div>
-                          <p class="text-gray-100 italic">Notes: You can select the camera branch to get the template URL</p>
                         </div>
                       </div>
                       <div class="modal-action space-x-4">
-                        <label for="add-camera-modal" class="btn w-36">Cancel</label>
-                        <label for="add-camera-modal" class="btn btn-primary w-36">Add</label>
+                        <label class="btn w-36" v-on:click="closeAddCameraModal">Cancel</label>
+                        <label class="btn btn-primary w-36" v-on:click="addCamera">Add</label>
                       </div>
                     </div>
                   </div>
@@ -382,7 +328,12 @@
               </div>
             </div>
             <div class="camera-list space-y-4 overflow-auto" :style="{'max-height': '500px'}">
-              <div v-for="(item,index) in cameraList" class="grid grid-cols-3 gap-4 camera-item cursor-pointer">
+              <div
+                v-for="(item,index) in cameraList"
+                class="grid grid-cols-3 gap-4 camera-item cursor-pointer"
+                :key="index"
+                v-on:click="chooseCamera(item)"
+              >
                 <div class="bg-zinc-300 flex flex-row items-center justify-center img rounded-lg">
                   <img :src="padlockIconUrl" alt="padlock">
                 </div>

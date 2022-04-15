@@ -1,4 +1,5 @@
-const { GetIP } = require('../../../mac')
+const { mapState } = require('vuex')
+const { GetIP, CreateCamera } = require('../../../mac')
 const { isDev, CAMERA_URL_REGEX } = require('../../configs')
 
 module.exports = {
@@ -19,11 +20,13 @@ module.exports = {
       snapIcon: isDev
         ? './assets/images/snapshot.png'
         : '../assets/images/snapshot.png',
-      link: '',
-      snapLink: '',
       form: {
+        link: '',
+        snapLink: '',
+        cameraName: '',
         ip: '',
         port: '',
+        remotePort: '12345',
         username: '',
         password: '',
       },
@@ -46,48 +49,57 @@ module.exports = {
         },
       ],
       cameraBranchSelected: '',
+      addCameraModal: false,
     }
   },
+  computed: mapState(['user']),
   watch: {
     cameraBranchSelected(val) {
-      this.snapLink = `${val.template}${val.snap}`
-      this.link = val.template
+      this.form.snapLink = `${val.template}${val.snap}`
+      this.form.link = val.template
     },
-    // form: {
-    //   handler(val) {
-    //     let link = this.link
-    //     const pos1 = this.getIPPosition(val.ip, 0)
-    //     const pos2 = this.getIPPosition(val.ip, 1)
-    //     const pos3 = this.getIPPosition(val.ip, 2)
-    //     const pos4 = this.getIPPosition(val.ip, 3)
-    //     const port = val.port
-    //     const auth = this.getAuthCamera(val.username, val.password)
-    //     link = `${auth}${pos1}.${pos2}.${pos3}.${pos4}:${port}`
-    //     this.link = link
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
-    // link(val) {
-    //   const linkArr = CAMERA_URL_REGEX.exec(val)
-    //   console.log(linkArr)
-    //   if (linkArr) {
-    //     const ip = linkArr[3] ?? ''
-    //     this.form.ip = ip
-    //   }
-    // },
+    'form.link': {
+      handler(val) {
+        if (val) {
+          const arr = [...val.matchAll(CAMERA_URL_REGEX)][0]
+          if (arr) {
+            const ip = arr[3]
+            const port = arr[4]
+            this.form.ip = ip
+            this.form.port = port
+          }
+        }
+      },
+    },
   },
   methods: {
-    // getIPPosition(val, pos) {
-    //   if (val && val.split('.')[pos]) {
-    //     return val.split('.')[pos]
-    //   }
-    //   return 'xxx'
-    // },
-    // getAuthCamera(username, pwd) {
-    //   if ((!username && !pwd) || (username === '' && pwd === '')) return ''
-    //   return `${username}:${pwd}@`
-    // },
+    addCamera() {
+      if (
+        this.form.link !== '' &&
+        this.form.snapLink !== '' &&
+        this.form.ip !== '' &&
+        this.form.port !== '' &&
+        this.user
+      ) {
+        CreateCamera({
+          ...this.form,
+          companyCode: this.user.company_code,
+        })
+      }
+    },
+    closeAddCameraModal() {
+      this.addCameraModal = false
+    },
+    openAddCameraModal() {
+      this.addCameraModal = true
+    },
+    chooseCamera(item) {
+      this.form.link = item.ip
+      this.form.snapLink = item.ip
+      this.form.ip = item.ip
+      this.form.cameraName = item.vendor.company ?? ''
+      this.openAddCameraModal()
+    },
     nextStep() {
       return this.$store.commit({ type: 'nextStep' })
     },
