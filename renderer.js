@@ -93,9 +93,20 @@ const App = createApp({
         reject(false)
       })
     },
+    setBulkAuth() {
+      const bulkAuth = localStorage.getItem('bulk-auth')
+      if (bulkAuth) {
+        const bulkAuthParsed = JSON.parse(bulkAuth)
+        this.$store.commit({
+          type: 'setBulkAuth',
+          bulkAuth: bulkAuthParsed,
+        })
+      }
+    },
   },
   mounted() {
     this.init()
+    this.setBulkAuth()
   },
 })
 

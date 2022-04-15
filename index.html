@@ -150,10 +150,20 @@
         <div class="space-y-2 p-4 border rounded-lg text-gray-600 overflow-auto agreement" id="agreement-area">
           <p v-for="item in lorems">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates ipsa accusamus magnam soluta amet corrupti laborum, et consectetur necessitatibus animi illum at distinctio fuga odio esse consequuntur quos voluptatum expedita.</p>
         </div>
+        <div class="form-control">
+          <label class="cursor-pointer label flex flex-row justify-start">
+            <input
+              type="checkbox"
+              v-model="acceptTerms"
+              :checked="acceptTerms"
+              class="checkbox checkbox-accent" />
+            <span class="label-text ml-2">I accept the terms of the license agreement</span>
+          </label>
+        </div>
         <div class="flex justify-end items-center">
           <button
             class="btn w-36"
-            :class="{'btn-disabled': !isBottom, 'text-gray-400': !isBottom, 'btn-primary': isBottom}"
+            :class="{'btn-disabled': !acceptTerms, 'text-gray-400': !acceptTerms, 'btn-primary': acceptTerms}"
             v-on:click="nextStep">
             Next
           </button>
@@ -232,15 +242,21 @@
                         <input
                           type="text"
                           placeholder="Username"
+                          v-model="bulkForm.username"
                           class="input input-bordered w-full text-white">
                         <input
                           type="password"
                           placeholder="Password"
+                          v-model="bulkForm.password"
                           class="input input-bordered w-full text-white">
                       </div>
                       <div class="modal-action space-x-4">
                         <label for="bulk-auth-modal" class="btn">Cancel</label>
-                        <label for="bulk-auth-modal" class="btn btn-primary">Done</label>
+                        <label
+                          for="bulk-auth-modal"
+                          class="btn btn-primary"
+                          v-on:click="okBulkAuth"
+                        >Done</label>
                       </div>
                     </div>
                   </div>
@@ -255,83 +271,93 @@
                   <input type="checkbox" id="add-camera-modal" class="modal-toggle">
                   <div class="modal modal-middle">
                     <div class="modal-box max-w-2xl">
-                      <h3 class="font-bold text-lg text-white">Add RTSP / RTMP</h3>
-                      <div class="py-4 space-y-4">
-                        <div class="flex items-center justify-between space-x-4">
-                          <div class="form-control w-9/12">
-                            <label class="label">
-                              <span class="label-text">IP Address</span>
-                            </label>
-                            <input
-                              type="text"
-                              placeholder="IP Address"
-                              class="input input-bordered w-full text-white"
-                              v-model="form.ip">
+                      <h3 class="font-bold text-lg text-white title-add-camera pb-2 flex flex-row items-center justify-between">
+                        <span>Add RTSP / RTMP</span>
+                        <select
+                          class="select prefix-select select-sm text-white"
+                          v-model="cameraBranchSelected"
+                        >
+                          <option disabled value="">Select camera branch</option>
+                          <option
+                            v-for="(item, index) in cameraBranch"
+                            :key="index"
+                            :value="item">{{item}}</option>
+                        </select>
+                      </h3>
+                      <div class="overflow-auto dark-scroll scroll-no-right" :style="{height: '500px'}">
+                        <div class="py-4 space-y-4">
+                          <div class="flex items-center justify-between space-x-4">
+                            <div class="form-control w-9/12">
+                              <label class="label">
+                                <span class="label-text">IP Address</span>
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="IP Address"
+                                class="input input-bordered w-full text-white input-no-outline"
+                                v-model="form.ip">
+                            </div>
+                            <div class="form-control w-3/12">
+                              <label class="label">
+                                <span class="label-text">Port</span>
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Port"
+                                class="input input-bordered w-full text-white input-no-outline"
+                                v-model="form.port">
+                            </div>
                           </div>
-                          <div class="form-control w-3/12">
-                            <label class="label">
-                              <span class="label-text">Port</span>
-                            </label>
-                            <input
-                              type="text"
-                              placeholder="Port"
-                              class="input input-bordered w-full text-white"
-                              v-model="form.port">
+                          <div class="flex items-center justify-between space-x-4">
+                            <div class="form-control w-6/12">
+                              <label class="label">
+                                <span class="label-text">Username</span>
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Username"
+                                class="input input-bordered w-full text-white input-no-outline"
+                                v-model="form.username">
+                            </div>
+                            <div class="form-control w-6/12">
+                              <label class="label">
+                                <span class="label-text">Password</span>
+                              </label>
+                              <input
+                                type="password"
+                                placeholder="Password"
+                                class="input input-bordered w-full text-white input-no-outline"
+                                v-model="form.password">
+                            </div>
                           </div>
-                        </div>
-                        <div class="flex items-center justify-between space-x-4">
-                          <div class="form-control w-6/12">
-                            <label class="label">
-                              <span class="label-text">Username</span>
+                          <div class="form-control w-full">
+                            <label class="input-group">
+                              <span><img :style="{width: '20px'}" :src="liveIcon" alt="live"></span>
+                              <input
+                                type="text"
+                                :value="link"
+                                class="input input-bordered text-white flex-1 w-full input-no-outline" />
                             </label>
-                            <input
-                              type="text"
-                              placeholder="Username"
-                              class="input input-bordered w-full text-white"
-                              v-model="form.username">
                           </div>
-                          <div class="form-control w-6/12">
-                            <label class="label">
-                              <span class="label-text">Password</span>
+                          <div class="form-control w-full">
+                            <label class="input-group">
+                              <span><img :style="{width: '20px'}" :src="snapIcon" alt="snap"></span>
+                              <input
+                                type="text"
+                                :value="snapLink"
+                                class="input input-bordered text-white flex-1 w-full input-no-outline" />
                             </label>
-                            <input
-                              type="password"
-                              placeholder="Password"
-                              class="input input-bordered w-full text-white"
-                              v-model="form.password">
                           </div>
-                        </div>
-                        <div class="flex flex-row w-full">
-                          <select
-                            class="select prefix-select text-white rounded-r-none flex-0"
-                            v-model="form.protocol"
-                          >
-                            <option
-                              v-for="(item, index) in listProtocol"
-                              :key="index"
-                              :value="item">{{item}}</option>
-                          </select>
-                          <input
-                            :style="{background: '#191d24', color: '#fff', 'padding-left': '0px'}"
-                            disabled
-                            type="text"
-                            :value="link"
-                            placeholder="username:password@xxx.xxx.xxx.xxx:554/example/1"
-                            class="input input-bordered text-white flex-1 rounded-none border-0">
-                          <input
-                            type="text"
-                            v-model="fragment"
-                            placeholder="channel/1"
-                            class="input input-bordered text-white rounded-l-none border-l-0">
-                        </div>
-                        <button
-                        v-on:click="testConnection"
-                          class="btn btn-neutral w-full capitalize">Test connection</button>
-                        <div class="review w-full rounded-lg flex justify-center items-center relative">
-                          <img v-if="!testLoading && !testOK" :src="noConnectionIcon" alt="no connection">
-                          <progress v-if="testLoading" class="progress w-56"></progress>
-                          <div v-if="testOK && !testLoading" class="absolute left-0 bottom-0 w-full full-link py-2 px-4 flex items-center">
-                            <p class="text-white">{{fullLink}} <span class="text-green-600 text-base">✓</span></p>
+
+                          <button
+                          v-on:click="testConnection"
+                            class="btn btn-neutral w-full capitalize">Test connection</button>
+                          <div class="review w-full rounded-lg flex justify-center items-center relative">
+                            <img v-if="!testLoading && !testOK" :src="noConnectionIcon" alt="no connection">
+                            <progress v-if="testLoading" class="progress w-56"></progress>
+                            <div v-if="testOK && !testLoading" class="absolute left-0 bottom-0 w-full full-link py-2 px-4 flex items-center">
+                              <p class="text-white">{{link}} <span class="text-green-600 text-base">✓</span></p>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -389,7 +415,7 @@
     <script type="text/x-template" id="home">
       <div class="min-h-screen bg-white">
         <!-- Navbar -->
-        <div class="navbar bg-base-100" :style="{'border-bottom': '1px solid #262b35'}">
+        <div class="navbar bg-base-100 fixed w-full left-0 top-0 z-50" :style="{'border-bottom': '1px solid #262b35'}">
           <div class="navbar-start">
             <div class="dropdown">
               <label tabindex="0" class="btn btn-ghost btn-circle">
@@ -433,40 +459,122 @@
           </div>
         </div>
 
-        <!-- Stats -->
-        <div class="flex justify-center items-center mt-6">
-          <div class="stats shadow">
-            <div class="stat">
-              <div class="stat-figure text-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-              </div>
-              <div class="stat-title">Total Likes</div>
-              <div class="stat-value text-primary">25.6K</div>
-              <div class="stat-desc">21% more than last month</div>
-            </div>
+        <div class="p-8 overflow-auto" :style="{'margin-top': '67px'}">
+          <p class="pb-4 text-xl text-black font-semibold uppercase title-wrap-dash">Dashboard</p>
 
-            <div class="stat">
-              <div class="stat-figure text-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-              </div>
-              <div class="stat-title">Page Views</div>
-              <div class="stat-value text-secondary">2.6M</div>
-              <div class="stat-desc">21% more than last month</div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-figure text-secondary">
-                <div class="avatar online">
-                  <div class="w-16 rounded-full">
-                    <img src="https://api.lorem.space/image/face?w=128&h=128" />
+          <div class="space-x-4 flex flex-row justify-between first-section">
+            <div class="w-1/3 space-y-4">
+              <div class="card bg-base-100 shadow-xl w-full relative card-dash">
+                <div class="curve curve-right"></div>
+                <div class="card-body relative z-10">
+                  <div class="absolute left-0 h-full top-0 flex items-center px-4 pl-8">
+                    <img :src="!frpStatus? brokenLink: linked" alt="break" width="50" />
+                  </div>
+                  <div class="text-right text-white">
+                    <div class="capitalize font-semibold mb-4 text-lg">
+                      <span class="uppercase">frp</span> status
+                    </div>
+                    <div class="flex justify-end items-center mt-8">
+                      <span class="flex h-6 w-6 relative">
+                        <span
+                          v-if="frpStatus"
+                          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 z-50"></span>
+                        <span
+                          class="relative inline-flex rounded-full h-6 w-6"
+                          :class="{'bg-green-500': frpStatus, 'bg-gray-300': !frpStatus}"></span>
+                      </span>
+                      <span class="inline-block ml-4">{{frpStatus? 'Connected': 'Disconnected'}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="stat-value">86%</div>
-              <div class="stat-title">Tasks done</div>
-              <div class="stat-desc text-secondary">31 tasks remaining</div>
+              <div class="card bg-base-100 shadow-xl w-full relative card-dash">
+                <div class="curve curve-left"></div>
+                <div class="card-body text-white relative z-10">
+                  <div class="absolute right-0 h-full top-0 flex items-center px-4">
+                    <img :src="cctvCamera" alt="camera" width="80" />
+                  </div>
+                  <div class="capitalize font-semibold mb-4 text-lg">device overview</div>
+                  <div class="flex flex-col space-y-2">
+                    <div class="flex flex-row items-center">
+                      <div class="flex-1 capitalize">total device:</div>
+                      <div class="flex-1">{{devicesList.length}}</div>
+                    </div>
+                    <div class="flex flex-row items-center">
+                      <div class="flex-1 capitalize">device on:</div>
+                      <div class="flex-1">{{deviceOn.length}}</div>
+                    </div>
+                    <div class="flex flex-row items-center">
+                      <div class="flex-1 capitalize">device off:</div>
+                      <div class="flex-1">{{deviceOff.length}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card bg-base-100 shadow-xl w-full relative card-dash">
+                <div class="curve curve-right"></div>
+                <div class="card-body text-right z-10 relative text-white">
+                  <div class="absolute left-0 h-full top-0 flex items-center px-4 pl-8">
+                    <img :src="userInfo" alt="break" width="60" />
+                  </div>
+                  <div class="capitalize font-semibold mb-4 text-lg">
+                    User status
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w-2/3 space-y-4">
+              <div class="bg-slate-50 rounded-lg p-4 h-full">
+                <p class="mb-2 pb-2 text-black uppercase text-base font-semibold title-card">Devices list</p>
+                <div class="overflow-x-auto">
+                  <table class="table  w-full transparent">
+                    <!-- head -->
+                    <thead>
+                      <tr>
+                        <th>Status</th>
+                        <th>IP Address</th>
+                        <th>Name</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item, index) in devicesList" :key="index">
+                        <td>
+                          <div class="flex items-center">
+                            <span class="flex h-3 w-3 relative">
+                              <span
+                                v-if="item.status"
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                              <span
+                                class="relative inline-flex rounded-full h-3 w-3 bg-green-500"
+                                :class="{'bg-green-500': item.status, 'bg-gray-300': !item.status}"></span>
+                            </span>
+                            <!-- <img :src="item.status? pointGreen: pointRed" alt="status" width="15"/> -->
+                            <span class="ml-2">{{item.status? 'On': 'Off'}}</span>
+                          </div>
+                        </td>
+                        <td>{{item.ip}}</td>
+                        <td>
+                          <p :class="{'text-gray-400': item.name === ''}">
+                            {{item.name === ''? 'no name': item.name}}
+                          </p>
+                        </td>
+                        <td>
+                          <div>
+                            <input type="checkbox" class="toggle toggle-sm" :checked="item.status">
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
+
+          <!-- second section -->
+          <div class="bg-slate-50 w-full h-80 rounded-lg mt-8"></div>
+
         </div>
       </div>
     </script>
