@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello</title>
+    <title>viAct Client ver 1.0.0</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -163,7 +163,7 @@
               v-model="acceptTerms"
               :checked="acceptTerms"
               class="checkbox checkbox-accent" />
-            <span class="label-text ml-2">I accept the terms of the license agreement</span>
+            <span class="label-text ml-2 text-black">I accept the terms of the license agreement</span>
           </label>
         </div>
         <div class="flex justify-end items-center">
@@ -230,7 +230,7 @@
             </div>
           </div> -->
           <!-- v-if="!loading" -->
-          <div v-if="!loading" class="other-camera text-sm">
+          <div class="other-camera text-sm">
             <div class="flex flex-row justify-between items-center mb-4">
               <p class="font-semibold">3rd party cameras</p>
               <div class="flex items-center justify-end flex-row">
@@ -287,12 +287,12 @@
                           <option
                             v-for="(item, index) in cameraBranch"
                             :key="index"
-                            :value="item">{{item}}</option>
+                            :value="item">{{item.name}}</option>
                         </select>
                       </h3>
                       <div class="overflow-auto dark-scroll scroll-no-right" :style="{height: '500px'}">
                         <div class="py-4 space-y-4">
-                          <div class="flex items-center justify-between space-x-4">
+                          <!-- <div class="flex items-center justify-between space-x-4">
                             <div class="form-control w-9/12">
                               <label class="label">
                                 <span class="label-text">IP Address</span>
@@ -335,13 +335,14 @@
                                 class="input input-bordered w-full text-white input-no-outline"
                                 v-model="form.password">
                             </div>
-                          </div>
+                          </div> -->
                           <div class="form-control w-full">
                             <label class="input-group">
                               <span><img :style="{width: '20px'}" :src="liveIcon" alt="live"></span>
                               <input
                                 type="text"
-                                :value="link"
+                                v-model="link"
+                                placeholder="Live streaming url"
                                 class="input input-bordered text-white flex-1 w-full input-no-outline" />
                             </label>
                           </div>
@@ -350,7 +351,8 @@
                               <span><img :style="{width: '20px'}" :src="snapIcon" alt="snap"></span>
                               <input
                                 type="text"
-                                :value="snapLink"
+                                v-model="snapLink"
+                                placeholder="Snapshot url"
                                 class="input input-bordered text-white flex-1 w-full input-no-outline" />
                             </label>
                           </div>
@@ -365,6 +367,7 @@
                               <p class="text-white">{{link}} <span class="text-green-600 text-base">✓</span></p>
                             </div>
                           </div>
+                          <p class="text-gray-100 italic">Notes: You can select the camera branch to get the template URL</p>
                         </div>
                       </div>
                       <div class="modal-action space-x-4">
@@ -435,7 +438,7 @@
             </div>
           </div>
           <div class="navbar-center">
-            <a class="btn btn-ghost normal-case text-xl">Viact Home</a>
+            <a class="btn btn-ghost normal-case text-xl">viAct</a>
           </div>
           <div class="navbar-end">
             <button class="btn btn-ghost btn-circle">
@@ -477,8 +480,8 @@
                     <img :src="!frpStatus? brokenLink: linked" alt="break" width="50" />
                   </div>
                   <div class="text-right text-white">
-                    <div class="capitalize font-semibold mb-4 text-lg">
-                      <span class="uppercase">frp</span> status
+                    <div class="uppercase font-thin tracking-widest font-semibold mb-4 text-lg">
+                      frp status
                     </div>
                     <div class="flex justify-end items-center mt-8">
                       <span class="flex h-6 w-6 relative">
@@ -500,7 +503,7 @@
                   <div class="absolute right-0 h-full top-0 flex items-center px-4">
                     <img :src="cctvCamera" alt="camera" width="80" />
                   </div>
-                  <div class="capitalize font-semibold mb-4 text-lg">device overview</div>
+                  <div class="uppercase font-thin tracking-widest font-semibold mb-4 text-lg">device overview</div>
                   <div class="flex flex-col space-y-2">
                     <div class="flex flex-row items-center">
                       <div class="flex-1 capitalize">total device:</div>
@@ -523,9 +526,23 @@
                   <div class="absolute left-0 h-full top-0 flex items-center px-4 pl-8">
                     <img :src="userInfo" alt="break" width="60" />
                   </div>
-                  <div class="capitalize font-semibold mb-4 text-lg">
+                  <div class="uppercase font-thin tracking-widest font-semibold mb-4 text-lg">
                     User status
                   </div>
+                  <div v-if="freeTrial" class="uppercase text-xl user-status trial-status">
+                    free trial
+                  </div>
+                  <div v-if="!freeTrial" class="uppercase text-xl user-status vip-status">
+                    subscribed
+                  </div>
+                  <p v-if="freeTrial" class="text-xs">7 days left</p>
+                  <p v-if="!freeTrial" class="text-xs capitalize">annual 399$ per year</p>
+                  <p
+                    v-if="freeTrial"
+                    class="mt-4 text-xs capitalize underline cursor-pointer"
+                    v-on:click="endFreeTrial"
+                  >
+                    Upgrade your account</p>
                 </div>
               </div>
             </div>
@@ -567,7 +584,7 @@
                         </td>
                         <td>
                           <div>
-                            <input type="checkbox" class="toggle toggle-sm" :checked="item.status">
+                            <input type="checkbox" class="toggle toggle-sm toggle-accent" :checked="item.status">
                           </div>
                         </td>
                       </tr>
@@ -579,7 +596,11 @@
           </div>
 
           <!-- second section -->
-          <div class="bg-slate-50 w-full h-80 rounded-lg mt-8"></div>
+          <div class="w-full h-80 rounded-lg mt-8 relative">
+            <div class="absolute w-full h-full flex flex-row items-center justify-center bg-slate-50">
+              <img :src="chart" alt="chart">
+            </div>
+          </div>
 
         </div>
       </div>

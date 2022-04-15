@@ -25,13 +25,6 @@ async function Auth(username) {
 }
 
 async function CreateCamera() {
-  let i = document.getElementById('config').value
-  let port = document.getElementById('port').value
-  let remote_port = document.getElementById('remote_port').value
-  let usercamera = document.getElementById('usercamera').value
-  let passwordcamera = document.getElementById('passwordcamera').value
-  let postfix = document.getElementById('postfix').value
-
   console.log('CreateCamera', pyData[i])
   let item = {
     remotePort: remote_port,
@@ -360,4 +353,5 @@ module.exports = {
   Auth,
   GetIP,
   InstallPackage,
+  createCameraUrl,
 }
