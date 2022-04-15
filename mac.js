@@ -30,12 +30,12 @@ async function Auth(username) {
   }
 }
 
-async function CreateCamera() {
-  console.log('CreateCamera', pyData[i])
+async function CreateCamera(body) {
+  console.log('create camera body', body)
   let item = {
-    remotePort: remote_port,
-    localPort: port,
-    localIp: pyData[i].ip,
+    remotePort: body.remotePort,
+    localPort: body.port,
+    localIp: body.ip,
   }
   configs.push(item)
 
@@ -44,12 +44,12 @@ async function CreateCamera() {
 
   // create createMJPEGStream
   let stUrl = await createMJPEGStreamUrl({
-    remotePort: remote_port,
-    cameraVideoPath: postfix,
+    remotePort: body.remotePort,
+    cameraVideoPath: body.link,
   })
 
   // create createSnapShotUrl
-  let ssUrl = await createSnapShotUrl(snapShotUrl)
+  let ssUrl = await createSnapShotUrl(body.snapLink)
 
   // create camera (API củ)
   await createCameraServer({ snapshot: ssUrl, web_url: stUrl, ...body })
@@ -98,9 +98,9 @@ async function createCameraServer(body) {
   try {
     let url = `https://api-dev-revamp.viact.net/api/v2/cameras`
     let { status, data } = await axios.post(url, {
-      company_code: 'TZS',
+      company_code: body.companyCode,
       engines: ['danger-zone', 'safety-helmet'],
-      name: 'Camera Tech 7',
+      name: body.cameraName,
       snapshot: body.snapshot,
       snapshot_created_at: Date.now(),
       type: '',
@@ -357,4 +357,5 @@ module.exports = {
   Auth,
   GetIP,
   InstallPackage,
+  CreateCamera,
 }

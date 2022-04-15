@@ -68,6 +68,7 @@ const App = createApp({
                 if (session && !err) {
                   authenticate().then(res => {
                     if (res.data) {
+                      console.log('data', res.data)
                       this.$store.commit({
                         type: 'setUser',
                         user: res.data,

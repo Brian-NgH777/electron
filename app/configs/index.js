@@ -8,9 +8,7 @@ const API_URL_V2 =
     ? 'https://api-revamp.viact.net'
     : 'https://api-dev-revamp.viact.net'
 
-const CAMERA_URL_REGEX = new RegExp(
-  /([^\s]+):\/\/([^\s]+)@([^\s/:]+)(?::([0-9]+))?(.*)/g,
-)
+const CAMERA_URL_REGEX = /([^\s]+):\/\/([^\s]+)@([^\s/:]+)(?::([0-9]+))?(.*)/g
 
 module.exports = {
   API_URL,
