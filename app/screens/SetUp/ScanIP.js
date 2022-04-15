@@ -1,5 +1,5 @@
 const { GetIP } = require('../../../mac')
-const { isDev } = require('../../configs')
+const { isDev, CAMERA_URL_REGEX } = require('../../configs')
 
 module.exports = {
   template: '#scan-ip',
@@ -13,12 +13,15 @@ module.exports = {
       noConnectionIcon: isDev
         ? './assets/images/no-connection.png'
         : '../assets/images/no-connection.png',
-      listProtocol: ['http://', 'rtsp://', 'rtmp://'],
+      liveIcon: isDev
+        ? './assets/images/live-streaming.png'
+        : '../assets/images/live-streaming.png',
+      snapIcon: isDev
+        ? './assets/images/snapshot.png'
+        : '../assets/images/snapshot.png',
       link: '',
-      fullLink: '',
-      fragment: '/ISAPI/Channel/1/picture',
+      snapLink: '',
       form: {
-        protocol: 'http://',
         ip: '192.168.1.2',
         port: 554,
         username: 'admin',
@@ -26,6 +29,12 @@ module.exports = {
       },
       testOK: false,
       testLoading: false,
+      bulkForm: {
+        username: '',
+        password: '',
+      },
+      cameraBranch: ['Dahua', 'Hikvision'],
+      cameraBranchSelected: '',
     }
   },
   watch: {
@@ -37,16 +46,14 @@ module.exports = {
         const pos4 = this.getIPPosition(val.ip, 3)
         const port = val.port
         const auth = this.getAuthCamera(val.username, val.password)
-        this.link = `${auth}${pos1}.${pos2}.${pos3}.${pos4}:${port}`
+        const link = `${auth}${pos1}.${pos2}.${pos3}.${pos4}:${port}`
+        this.link = link
       },
       deep: true,
       immediate: true,
     },
   },
   methods: {
-    getFullLink() {
-      return `${this.form.protocol}${this.link}${this.fragment}`
-    },
     getIPPosition(val, pos) {
       if (val && val.split('.')[pos]) {
         return val.split('.')[pos]
@@ -63,10 +70,16 @@ module.exports = {
     backStep() {
       return this.$store.commit({ type: 'backStep' })
     },
+    okBulkAuth() {
+      localStorage.setItem('bulk-auth', JSON.stringify(this.bulkForm))
+      this.$store.commit({
+        type: 'setBulkAuth',
+        bulkAuth: this.bulkForm,
+      })
+    },
     testConnection() {
       if (!this.testLoading) {
         this.testLoading = true
-        this.fullLink = this.getFullLink()
         setTimeout(() => {
           this.testLoading = false
           this.testOK = true

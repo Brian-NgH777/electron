@@ -8,6 +8,9 @@ const API_URL_V2 =
     ? 'https://api-revamp.viact.net'
     : 'https://api-dev-revamp.viact.net'
 
+const CAMERA_URL_REGEX =
+  /^(rtsp|http|https|rtmp|hls):\/\/([^\s]+)([^\s/:]+)(?::([0-9]+))?/i
+
 module.exports = {
   API_URL,
   API_URL_V2,
@@ -16,4 +19,5 @@ module.exports = {
   AWS_S3_REGION:'ap-southeast-1',
   AWS_S3_BUCKET:'customindz-shinobi',
   isDev: false,
+  CAMERA_URL_REGEX,
 }
