@@ -6,6 +6,11 @@ module.exports = {
       cognitoUser: null,
       user: null,
       appLoading: false,
+      bulkAuth: {
+        username: '',
+        password: '',
+      },
+      devicesList: [],
     }
   },
   mutations: {
@@ -27,6 +32,9 @@ module.exports = {
     setAppLoading(state, payload) {
       state.appLoading = payload.loading
     },
+    setBulkAuth(state, payload) {
+      state.bulkAuth = payload.bulkAuth
+    },
   },
   getters: {
     step(state) {
@@ -43,6 +51,9 @@ module.exports = {
     },
     appLoading(state) {
       return state.appLoading
+    },
+    bulkAuth(state) {
+      return state.bulkAuth
     },
   },
 }
