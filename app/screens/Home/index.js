@@ -23,6 +23,8 @@ module.exports = {
       userInfo: isDev
         ? './assets/images/info.png'
         : '../assets/images/info.png',
+      chart: isDev ? './assets/images/chart.png' : '../assets/images/chart.png',
+      freeTrial: true,
       frpStatus: true,
       devicesList: [
         {
@@ -67,6 +69,9 @@ module.exports = {
     },
   },
   methods: {
+    endFreeTrial() {
+      this.freeTrial = false
+    },
     logout() {
       const settingDone = localStorage.getItem('setting-done')
       Auth.signOut()

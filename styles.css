@@ -134,3 +134,14 @@ img {
 .curve.curve-center {
   clip-path: ellipse(48% 100% at 50% 0%);
 }
+
+.user-status {
+  font-weight: 900;
+  letter-spacing: 0.2rem;
+}
+.user-status.trial-status {
+  color: #21c55d;
+}
+.user-status.vip-status {
+  color: #d8dc00;
+}
