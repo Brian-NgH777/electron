@@ -17,6 +17,6 @@ module.exports = {
   AWS_S3_SECRET_KEY: 'pHYxKj6EeXOOo6CUR7fEiiJHdSIR+8XFiPyRbWXQ',
   AWS_S3_REGION: 'ap-southeast-1',
   AWS_S3_BUCKET: 'customindz-shinobi',
-  isDev: false,
+  isDev: true,
   CAMERA_URL_REGEX,
 }

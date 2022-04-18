@@ -75,8 +75,6 @@ module.exports = {
   methods: {
     addCamera() {
       console.log('================== CREATE CAMERA ============ ')
-      console.log('form =', this.form, this.user)
-      console.log('user =', this.user)
       if (
         this.form.link !== '' &&
         this.form.snapLink !== '' &&
@@ -84,9 +82,11 @@ module.exports = {
         this.form.port !== '' &&
         this.user
       ) {
+        const arr = [...this.form.link.matchAll(CAMERA_URL_REGEX)][0]
         const body = {
           ...this.form,
           companyCode: this.user.company_code,
+          link: arr[arr.length - 1],
         }
         console.log('body =', body)
         // CreateCamera(body)
