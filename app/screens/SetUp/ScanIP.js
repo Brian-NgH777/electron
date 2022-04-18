@@ -74,6 +74,9 @@ module.exports = {
   },
   methods: {
     addCamera() {
+      console.log('================== CREATE CAMERA ============ ')
+      console.log('form =', this.form, this.user)
+      console.log('user =', this.user)
       if (
         this.form.link !== '' &&
         this.form.snapLink !== '' &&
@@ -81,10 +84,12 @@ module.exports = {
         this.form.port !== '' &&
         this.user
       ) {
-        CreateCamera({
+        const body = {
           ...this.form,
           companyCode: this.user.company_code,
-        })
+        }
+        console.log('body =', body)
+        // CreateCamera(body)
       }
     },
     closeAddCameraModal() {
