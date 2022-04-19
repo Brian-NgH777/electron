@@ -30,7 +30,7 @@ const App = createApp({
     }
   },
   computed: {
-    ...mapGetters(['userPool']),
+    ...mapGetters(['userPool', 'step']),
   },
   watch: {
     userPool(val) {
@@ -73,8 +73,7 @@ const App = createApp({
                         type: 'setUser',
                         user: res.data,
                       })
-                      const areDone = localStorage.getItem('setting-done')
-                      if (areDone) {
+                      if (this.step >= 4) {
                         this.$router.push('/home')
                       } else {
                         this.$router.push('/settings')

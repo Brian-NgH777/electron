@@ -40,8 +40,7 @@ module.exports = {
     },
   },
   created() {
-    const settingDone = localStorage.getItem('setting-done')
-    if (settingDone) {
+    if (this.step >= 4) {
       this.$router.push('/home')
     }
   },
