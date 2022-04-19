@@ -14,7 +14,7 @@ module.exports = {
     }
   },
   computed: {
-    ...mapGetters(['userPool']),
+    ...mapGetters(['userPool', 'step']),
   },
   methods: {
     login: async function (e) {
@@ -34,8 +34,7 @@ module.exports = {
           type: 'setUser',
           user: result.data,
         })
-        const settingDone = localStorage.getItem('setting-done')
-        if (settingDone) {
+        if (this.step >= 4) {
           this.$router.push('/home')
         } else {
           this.$router.push('/settings')

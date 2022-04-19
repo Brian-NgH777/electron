@@ -73,16 +73,14 @@ module.exports = {
       this.freeTrial = false
     },
     logout() {
-      const settingDone = localStorage.getItem('setting-done')
       Auth.signOut()
       localStorage.clear()
-      if (settingDone) {
-        localStorage.setItem('setting-done', settingDone)
-      }
       return this.$router.push('/')
     },
     clearSettingDone() {
-      localStorage.removeItem('setting-done')
+      this.$store.commit({
+        type: 'resetStep',
+      })
     },
   },
 }

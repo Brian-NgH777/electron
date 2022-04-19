@@ -31,7 +31,6 @@ async function Auth(username) {
 }
 
 async function CreateCamera(body) {
-  console.log('create camera body', body)
   let item = {
     remotePort: body.remotePort,
     localPort: body.port,

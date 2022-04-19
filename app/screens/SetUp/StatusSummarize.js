@@ -6,7 +6,6 @@ module.exports = {
   methods: {
     nextStep() {
       this.$store.commit({ type: 'nextStep' })
-      localStorage.setItem('setting-done', true)
       return this.$router.push('/home')
     },
     backStep() {

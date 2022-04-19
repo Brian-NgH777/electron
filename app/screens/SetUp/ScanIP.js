@@ -129,9 +129,9 @@ module.exports = {
     },
     async scanIP() {
       this.loading = true
-      const t = setTimeout(() => (this.loading = false), 20000)
+      // const t = setTimeout(() => (this.loading = false), 20000)
       const data = await GetIP()
-      clearTimeout(t)
+      // clearTimeout(t)
       if (data) {
         this.loading = false
         const parseData = data.map(item => ({

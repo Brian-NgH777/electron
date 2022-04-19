@@ -20,6 +20,9 @@ module.exports = {
     backStep(state) {
       state.step -= 1
     },
+    resetStep(state) {
+      state.step = 1
+    },
     setUserPool(state, payload) {
       state.userPool = payload.userPool
     },
