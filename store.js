@@ -1,7 +1,7 @@
 module.exports = {
   state() {
     return {
-      step: 4,
+      step: 1,
       userPool: null,
       cognitoUser: null,
       user: null,
