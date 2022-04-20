@@ -65,8 +65,13 @@ module.exports = {
           if (arr) {
             const ip = arr[3]
             const port = arr[4]
+            const auth = arr[2]
+            const username = auth.split(':')[0] ?? ''
+            const password = auth.split(':')[1] ?? ''
             this.form.ip = ip
             this.form.port = port
+            this.form.username = username
+            this.form.password = password
           }
         }
       },
@@ -88,8 +93,7 @@ module.exports = {
           companyCode: this.user.company_code,
           link: arr[arr.length - 1],
         }
-        console.log('body =', body)
-        // CreateCamera(body)
+        CreateCamera(body)
       }
     },
     closeAddCameraModal() {

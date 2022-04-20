@@ -32,6 +32,7 @@ async function Auth(username) {
 
 async function CreateCamera(body) {
   let item = {
+    username: body.username,
     remotePort: body.remotePort,
     localPort: body.port,
     localIp: body.ip,
@@ -43,12 +44,14 @@ async function CreateCamera(body) {
 
   // create createMJPEGStream
   let stUrl = await createMJPEGStreamUrl({
+    username: body.username,
     remotePort: body.remotePort,
     cameraVideoPath: body.link,
   })
 
   // create createSnapShotUrl
   let ssUrl = await createSnapShotUrl(body.snapLink)
+  console.log('snapshot link', ssUrl)
 
   // create camera (API củ)
   await createCameraServer({ snapshot: ssUrl, web_url: stUrl, ...body })
@@ -94,6 +97,7 @@ async function downloadFile(fileUrl) {
 }
 
 async function createCameraServer(body) {
+  console.log('body', body)
   try {
     let url = `https://api-dev-revamp.viact.net/api/v2/cameras`
     let { status, data } = await axios.post(url, {
@@ -145,7 +149,7 @@ async function createFrpcForward(d) {
   try {
     let url = `https://api-dev-revamp.viact.net/api/v2/frpc-forwards`
     let { status, data } = await axios.post(url, {
-      username: auth.username,
+      username: d.username,
       remote_port: d.remotePort,
       local_port: d.localPort,
       local_ip: d.localIp,
@@ -176,7 +180,7 @@ async function createMJPEGStreamUrl(d) {
   try {
     let url = `https://api.viact.net/cgi-config/camera-url`
     let { status, data } = await axios.post(url, {
-      clientID: auth.username,
+      clientID: d.username,
       remotePort: Number(d.remotePort),
       cameraVideoPath: d.cameraVideoPath,
     })

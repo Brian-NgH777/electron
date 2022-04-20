@@ -145,3 +145,9 @@ img {
 .user-status.vip-status {
   color: #d8dc00;
 }
+.alert-border {
+  border-bottom: 1px solid #1f232c;
+}
+.alert-border:last-child {
+  border: none;
+}
