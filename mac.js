@@ -30,6 +30,21 @@ async function Auth(username) {
   }
 }
 
+async function checkConnect(url) {
+
+  switch(expression) {
+    case 'http':
+      const res = await downloadFile(snapShotUrl);
+      
+      return 
+      break;
+    case 'rtps':
+      break;
+    default:
+      console.error('error:', "no type support")
+  }
+}
+
 async function CreateCamera(body) {
   let item = {
     remotePort: body.remotePort,
@@ -82,7 +97,6 @@ async function uploadFromStream(arrBuffer) {
 }
 
 async function createSnapShotUrl(snapShotUrl) {
-  const res = await downloadFile(snapShotUrl)
   const data = await uploadFromStream(res.data)
   return data.Location
 }
@@ -219,7 +233,7 @@ async function GetIP() {
       break
     }
     case 'linux': {
-      cmd = path.join(__dirname, isDev ? 'py' : '../py', 'pk-new')
+      cmd = path.join(__dirname, isDev ? 'py' : '../py', 'pk-new-pi')
       break
     }
     default: {
