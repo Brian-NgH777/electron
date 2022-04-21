@@ -4,10 +4,10 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "prestart": "npm run format && npm run lint",
     "start": "electron .",
     "dist": "electron-builder build -mwl",
-    "build": "rm -rf release/ && electron-builder -mwl",
+    "prebuild": "npm run format && npm run lint",
+    "build": "rm -rf release/ && electron-builder build -mw",
     "build-linux": "rm -rf release/ && electron-builder --linux deb --armv7l",
     "format": "prettier --write \"./**/*.js\"",
     "lint": "prettier --check \"./**/*.js\"",
@@ -106,11 +106,13 @@
     "daisyui": "^2.13.6",
     "ini": "^2.0.0",
     "js-cookie": "^3.0.1",
+    "moment": "^2.29.3",
     "node-notifier": "^10.0.1",
     "path": "^0.12.7",
     "util": "^0.12.4",
     "vue": "^3.2.31",
     "vue-router": "^4.0.14",
+    "vuetable-2": "^2.0.0-beta.4",
     "vuex": "^4.0.2"
   }
 }
