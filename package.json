@@ -100,7 +100,7 @@
   "dependencies": {
     "amazon-cognito-identity-js": "^5.2.8",
     "aws-amplify": "^4.3.19",
-    "aws-sdk": "^2.1115.0",
+    "aws-sdk": "^2.1180.0",
     "axios": "^0.26.1",
     "child_process": "^1.0.2",
     "daisyui": "^2.13.6",
